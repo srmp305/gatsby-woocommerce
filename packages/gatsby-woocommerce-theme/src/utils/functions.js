@@ -276,6 +276,7 @@ export const getFormattedCart = (data) => {
 
     product.productId = givenProduct?.node?.databaseId;
     product.cartKey = givenProducts[i].key;
+    product.description = givenProduct?.node?.description;
     product.name = givenProduct?.node?.name;
     product.qty = givenProducts[i].quantity;
     product.price = total / product.qty;

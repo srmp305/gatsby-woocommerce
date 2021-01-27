@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { getFormattedCart, getUpdatedItems } from "../../../utils/functions";
 import CartItem from "../cart-item";
+import CartItemMobile from "../cart-item-mobile";
 import { v4 } from "uuid";
 import { useMutation, useQuery } from "@apollo/client";
 import UPDATE_CART from "../../../mutations/update-cart";
@@ -111,18 +112,18 @@ const CartItemsContainer = () => {
     //       <h1 className="mt-5 woo-next-cart-heading">Cart</h1>
     //       <div className="woo-next-cart-table-row row">
     //         <div className="woo-next-cart-table col-md-8 mb-md-0 mb-5">
-	  //           <table>
+    //           <table>
     //           {cart.products.length &&
-	  //           cart.products.map((item) => (
-		//             <CartItem
-		// 	            key={item.productId}
-		// 	            item={item}
-		// 	            updateCartProcessing={updateCartProcessing}
-		// 	            products={cart.products}
-		// 	            handleRemoveProductClick={handleRemoveProductClick}
-		// 	            updateCart={updateCart}
-		//             />
-	  //           ))}
+    //           cart.products.map((item) => (
+    //             <CartItem
+    // 	            key={item.productId}
+    // 	            item={item}
+    // 	            updateCartProcessing={updateCartProcessing}
+    // 	            products={cart.products}
+    // 	            handleRemoveProductClick={handleRemoveProductClick}
+    // 	            updateCart={updateCart}
+    //             />
+    //           ))}
     //           </table>
 
     //           {/*Clear entire cart*/}
@@ -198,185 +199,124 @@ const CartItemsContainer = () => {
     //   )}
     // </div>
     <div className="cart-page">
-
-        <div className="container">
-
+      <div className="container">
         {cart ? (
           <div className="row">
-
             <div className="col-md-12">
               <h2>Shopping Cart</h2>
             </div>
 
-              <div className="col-md-9">
-                  <div className="cart-item-content">
-                      
-                      <div className="cart-table">
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>Product Details</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Sub Total</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            {cart.products.length &&
-                              cart.products.map((item) => (
-                                <CartItem
-                                  key={item.productId}
-                                  item={item}
-                                  updateCartProcessing={updateCartProcessing}
-                                  products={cart.products}
-                                  handleRemoveProductClick={handleRemoveProductClick}
-                                  updateCart={updateCart}
-                                />
-                              ))}
+            <div className="col-md-9">
+              <div className="cart-item-content">
+                <div className="cart-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Product Details</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Sub Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cart.products.length &&
+                        cart.products.map((item) => (
+                          <CartItem
+                            key={item.productId}
+                            item={item}
+                            updateCartProcessing={updateCartProcessing}
+                            products={cart.products}
+                            handleRemoveProductClick={handleRemoveProductClick}
+                            updateCart={updateCart}
+                          />
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
 
-                              
-                            </tbody>
-                          </table>
-                      </div>
+                <div className="cart-item-mbl">
+                  <div className="mbl-cart-heading">
+                    <h2>Items</h2>
+                  </div>
 
+                  <div className="cart-item-mbl-content">
+                    {cart.products.length &&
+                      cart.products.map((item) => (
+                        <CartItemMobile
+                          key={item.productId}
+                          item={item}
+                          updateCartProcessing={updateCartProcessing}
+                          products={cart.products}
+                          handleRemoveProductClick={handleRemoveProductClick}
+                          updateCart={updateCart}
+                        />
+                      ))}
+                  
+                  </div>
+                </div>
 
-
-
-                      <div className="cart-item-mbl">
-
-                       <div className="mbl-cart-heading"><h2>Items</h2></div>
-
-                       <div className="cart-item-mbl-content">
-
-                        <div className="cart-item-list-mobile">
-                            <div className="cart-item-img">
-                                <img src={cartproduct1} alt="" />
-                            </div>
-                            <div className="cart-info-mbl">
-                                <h4>Guava Pastry - 15 Pack</h4>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                <div className="cart-mbl-footer">
-                                    <h2>$25</h2>
-                                    <div className="increament-input">
-                                      <button className="decriment-btn" onClick={() => setCount(count - 1)}><i className="fa fa-minus"></i></button>
-                                      <input type="number" value={count} />
-                                      <button className="increament-btn" onClick={() => setCount(count + 1)}><i className="fa fa-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="cart-item-list-mobile">
-                            <div className="cart-item-img">
-                                <img src={cartproduct1} alt="" />
-                            </div>
-                            <div className="cart-info-mbl">
-                                <h4>Guava Pastry - 15 Pack</h4>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                <div className="cart-mbl-footer">
-                                    <h2>$25</h2>
-                                    <div className="increament-input">
-                                      <button className="decriment-btn" onClick={() => setCount(count - 1)}><i className="fa fa-minus"></i></button>
-                                      <input type="number" value={count} />
-                                      <button className="increament-btn" onClick={() => setCount(count + 1)}><i className="fa fa-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="cart-item-list-mobile">
-                            <div className="cart-item-img">
-                                <img src={cartproduct1} alt="" />
-                            </div>
-                            <div className="cart-info-mbl">
-                                <h4>Guava Pastry - 15 Pack</h4>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                <div className="cart-mbl-footer">
-                                    <h2>$25</h2>
-                                    <div className="increament-input">
-                                      <button className="decriment-btn" onClick={() => setCount(count - 1)}><i className="fa fa-minus"></i></button>
-                                      <input type="number" value={count} />
-                                      <button className="increament-btn" onClick={() => setCount(count + 1)}><i className="fa fa-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-
-                      </div>
-
-
-                      <div className="apply-coupon">
+                {/* <div className="apply-coupon">
                           <div className="subscribe-form">
                               <input type="email" className="form-control"  placeholder="Enter coupon code" />
                               <button>Apply Coupon</button>
                           </div>
-                      </div>
-                  </div>
+                      </div> */}
               </div>
+            </div>
 
-
-
-             
-
-
-
-              <div className="col-md-3">
-
-                <div className="cart-sidebar">
-
-                  <h3>Cart Total</h3>
-                  <div className="cart-total">
-                      <ul>
-                        <li><span>Subtotal</span> {"string" !== typeof cart.totalProductsPrice
+            <div className="col-md-3">
+              <div className="cart-sidebar">
+                <h3>Cart Total</h3>
+                <div className="cart-total">
+                  <ul>
+                    <li>
+                      <span>Subtotal</span>{" "}
+                      {"string" !== typeof cart.totalProductsPrice
                         ? cart.totalProductsPrice.toFixed(2)
-                        : cart.totalProductsPrice}</li>
-                        <li><span>Shippings</span> FREE SHIPPING</li>
-                        <li><span>Total</span> <strong>{"string" !== typeof cart.totalProductsPrice
-                        ? cart.totalProductsPrice.toFixed(2)
-                        : cart.totalProductsPrice}</strong></li>
-                      </ul>
-                  </div>
-
-                  <Link to="/checkout" className="checkout-btn">Checkout</Link>
-
+                        : cart.totalProductsPrice}
+                    </li>
+                    <li>
+                      <span>Shippings</span> FREE SHIPPING
+                    </li>
+                    <li>
+                      <span>Total</span>{" "}
+                      <strong>
+                        {"string" !== typeof cart.totalProductsPrice
+                          ? cart.totalProductsPrice.toFixed(2)
+                          : cart.totalProductsPrice}
+                      </strong>
+                    </li>
+                  </ul>
                 </div>
 
+                <Link to="/checkout" className="checkout-btn">
+                  Checkout
+                </Link>
               </div>
-
-
+            </div>
 
             <div className="col-md-12">
               {requestError ? (
-                  <div className="woo-next-cart-total-container">
-                    {" "}
-                    {requestError}{" "}
-                  </div>
-                ) : (
-                  ""
-                )}
-            </div>
-
-            
-          </div>
-
-
-
-
-          )  : (
-
-            <div className="row">
-              <div className="col-md-12">
-                <div className="no-item-cart">
-                  <h2>No items in the cart</h2>
-                  <Link to="/">Add New Products</Link>
+                <div className="woo-next-cart-total-container">
+                  {" "}
+                  {requestError}{" "}
                 </div>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="row">
+            <div className="col-md-12">
+              <div className="no-item-cart">
+                <h2>No items in the cart</h2>
+                <Link to="/">Add New Products</Link>
               </div>
             </div>
-          )}
-
-        </div>
-
+          </div>
+        )}
+      </div>
     </div>
   );
 };

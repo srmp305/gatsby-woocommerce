@@ -2588,7 +2588,19 @@ body {
 
 
 @media screen and (max-width:767px) {
-
+    .my-orders .cart-table {
+        display: block!important;
+        overflow-x: auto;
+    }
+    
+    .my-orders .cart-table td {
+        white-space: nowrap;
+    }
+    
+    .my-orders .cart-table .view-order-btn {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
     .woo-menu-cart-icon {
         top: -13px;
     }
