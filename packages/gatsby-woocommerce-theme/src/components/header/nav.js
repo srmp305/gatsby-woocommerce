@@ -129,6 +129,11 @@ const Nav = (props) => {
             </ul>
           ) : null}
         </div>
+        <div className="mobile-my-account">
+              <Link to="/wishlist">Favourite</Link>
+              <Link to="/my-account">My Account</Link>
+              <Link className="get-started" to="/">Get Started</Link>                   
+        </div>
       </nav>
       <button
         className={menuButtonClasses}

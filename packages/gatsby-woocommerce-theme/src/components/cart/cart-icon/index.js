@@ -23,7 +23,7 @@ const CartIcon = () => {
 						</span>
 					</div>
 			</button>
-			<CartDropDown isDropdownOpen={ isDropdownOpen }/>
+			<CartDropDown isDropdownOpen={ isDropdownOpen } setIsDropdownOpen={setIsDropdownOpen}/>
 		</>
 
 	)

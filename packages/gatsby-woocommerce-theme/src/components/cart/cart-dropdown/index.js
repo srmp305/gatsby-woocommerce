@@ -4,8 +4,10 @@ import { AppContext } from "../../context/AppContext";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { isEmpty } from "lodash";
 import Link from "gatsby-link";
+import closeicon from "../../../images/Delete.svg";
+import closeimg from "../../../images/close-icon.png";
 
-const CartDropDown = ({ isDropdownOpen }) => {
+const CartDropDown = ({ isDropdownOpen, setIsDropdownOpen }) => {
 
 	const [ cart ] = useContext( AppContext );
 
@@ -20,24 +22,14 @@ const CartDropDown = ({ isDropdownOpen }) => {
 
 	return (
 		<div className={ `shopping-cart ${ isDropdownOpen ? 'is-open' : '' }` }>
-			<div className="shopping-cart-header">
-				<div className="cart-icon-wrp">
-					<Link to="/cart">
-						{/* eslint-disable */}
-						<span className="cart-icon" role="img">🛒</span>
-						<span className="badge">{ productsCount }</span>
-					</Link>
-				</div>
-				<div className="shopping-cart-total">
-					<span className="lighter-text">Total:</span>
-					<span className="main-color-text">{ totalPrice }</span>
-				</div>
-			</div>
+			<div className="cart-close-button" onClick={ () => setIsDropdownOpen( ! isDropdownOpen ) }><span>Cart</span><img src={closeimg} alt="close" /></div>
+			
 			<ul className="shopping-cart-items">
 				{ cart?.products.map( product => (
 					<li className="clearfix" key={ product.productId }>
 						{!isEmpty(product.image) ? (
 							<figure>
+								<div className="cart-remove"><img src={closeicon} alt="close" /></div>
 								<LazyLoadImage
 									alt={product.image.altText ? product.image.altText : ""}
 									src={product.image.sourceUrl} // use normal <img> attributes as props
@@ -63,6 +55,21 @@ const CartDropDown = ({ isDropdownOpen }) => {
 					</li>
 				) ) }
 			</ul>
+
+			<div className="shopping-cart-header">
+				<div className="cart-icon-wrp">
+					{/* <Link to="/cart">
+						{/* eslint-disable */}
+						{/* <span className="cart-icon" role="img"><img src={cartimg} alt="cart" /></span>
+						<span className="badge">{ productsCount }</span>
+					</Link> */} 
+					<span>Total:</span>
+				</div>
+				<div className="shopping-cart-total">
+					
+					<span className="main-color-text">{ totalPrice }</span>
+				</div>
+			</div>
 			<Link to="/checkout" className="button">Checkout</Link>
 		</div>
 	)

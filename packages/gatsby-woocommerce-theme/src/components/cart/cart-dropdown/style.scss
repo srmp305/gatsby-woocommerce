@@ -24,7 +24,7 @@
 		opacity: 1;
 	}
 
-	@include mq( small ) {
+	@include mq(small) {
 		right: -15px;
 	}
 
@@ -35,8 +35,10 @@
 	}
 
 	.shopping-cart-header {
-		border-bottom: 1px solid #E8E8E8;
+		border-bottom: 1px solid #f3f3f3;
 		padding-bottom: 15px;
+		border-top: 1px solid #f3f3f3;
+		padding-top: 15px;
 	}
 
 	.cart-icon {
@@ -44,6 +46,7 @@
 		font-size: 24px;
 		margin-right: 0px;
 	}
+
 	.cart-icon-wrp {
 		position: relative;
 	}
@@ -94,7 +97,8 @@
 		.item-name {
 			display: block;
 			padding-top: 0px;
-			font-size: 16px;
+			font-size: 14px;
+			line-height: 16px;
 		}
 
 		.item-price {
@@ -103,7 +107,7 @@
 		}
 
 		.item-quantity {
-			color:#8f8f8f;
+			color: #8f8f8f;
 			font-weight: normal;
 		}
 	}
@@ -123,7 +127,7 @@
 	}
 
 	.button {
-		background:  #db232e;
+		background: #db232e;
 		color: white;
 		text-align: center;
 		padding: 12px;
@@ -132,6 +136,73 @@
 		border-radius: 3px;
 		font-size: 16px;
 		margin: 25px 0 15px 0;
+	}
+
+	.cart-close-button {
+		display: none;
+	}
+
+	.shopping-cart-items figure {
+		display: flex;
+		align-items: center;
+	}
+
+	.shopping-cart-items figure .cart-remove {
+		margin-right: 10px;
+		cursor: pointer;
+	}
+
+}
+
+ul.shopping-cart-items .lazy-load-image-background.blur.lazy-load-image-loaded>img {
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+	border-radius: 3px;
+}
+
+@media screen and (max-width: 767px) {
+	.shopping-cart {
+		margin: 0;
+		float: right;
+		background: white;
+		width: 300px;
+		border-radius: 0px;
+		padding: 20px;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 99999;
+	}
+
+
+
+	.shopping-cart .button {
+		padding: 9px 10px;
+	}
+
+	.shopping-cart .shopping-cart-items .item-quantity {
+		font-size: 10px;
+	}
+
+	.cart-close-button {
+		text-align: right;
+		padding-bottom: 10px;
+		display: flex !important;
+		margin-top: -8px;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid #f3f3f3;
+		margin-bottom: 10px;
+	}
+
+	.cart-close-button span {
+		font-size: 18px;
+	}
+
+	.cart-close-button img {
+		width: 20px;
 	}
 
 }
