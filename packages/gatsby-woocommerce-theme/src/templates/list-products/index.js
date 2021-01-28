@@ -23,6 +23,7 @@ export default () => {
               node {
                 id
                 databaseId
+                name
                 nodeType
                 link
                 description
@@ -54,7 +55,35 @@ export default () => {
                     name
                   }
                 }
-              
+                ... on WpSimpleProduct {
+                  id
+                  name
+                  price
+                }
+                ... on WpVariableProduct {
+                  id
+                  name
+                  price
+                }
+                ... on WpExternalProduct {
+                  id
+                  name
+                  price
+                  externalUrl
+                }
+                ... on WpGroupProduct {
+                  id
+                  name
+                  products {
+                    nodes {
+                      ... on WpSimpleProduct {
+                        id
+                        name
+                        price
+                      }
+                    }
+                  }
+                }
                 seo {
                   canonical
                   title
@@ -65,7 +94,6 @@ export default () => {
                   opengraphAuthor
                   opengraphDescription
                   opengraphTitle
-                  opengraphDescription
                   opengraphImage {
                     sourceUrl
                   }
@@ -88,6 +116,7 @@ export default () => {
         data ? (
           <>
             <div className="product-container row">
+            {console.log(data,'rest')}
               {data.products.edges.map((product) => (
                 <Product
                   key={product.node.id}
