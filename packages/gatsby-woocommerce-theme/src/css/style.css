@@ -1863,7 +1863,7 @@ body {
     font-size: 15px;
     line-height: 24px;
     text-align: center;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     max-width: 112px;
     width: 100%;
     display: inline-block;
@@ -2400,8 +2400,46 @@ body {
     border: 1px solid #721216;
 }
 
+.order-detail-page .latest-order h2 {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    color: #0A0E15;
+    margin: 0;
+    padding-bottom: 20px;
+}
+
+.latest-order.billing-info h5 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.0555556px;
+    color: #0A0E15;
+    margin: 0;
+    padding-bottom: 5px;
+    text-transform: capitalize;
+}
+
+.order-detail-page .latest-order:first-child p {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-detail-page .latest-order p {
+    margin-bottom: 10px;
+}
+
+.order-detail-page .latest-order p span {
+    font-weight: 700;
+}
 
 
+.order-detail-page .latet-order-list {
+    border-top: 1px dashed #f1f1f1;
+    padding-top: 15px;
+    margin-top: 10px;
+}
 
 /**********************************************************************/
 /**************************** Media Query *****************************/
@@ -2588,19 +2626,7 @@ body {
 
 
 @media screen and (max-width:767px) {
-    .my-orders .cart-table {
-        display: block!important;
-        overflow-x: auto;
-    }
-    
-    .my-orders .cart-table td {
-        white-space: nowrap;
-    }
-    
-    .my-orders .cart-table .view-order-btn {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
+
     .woo-menu-cart-icon {
         top: -13px;
     }
@@ -3384,6 +3410,20 @@ body {
 
     .account-page .account-form {
         margin: 0px 15px;
+    }
+
+    .view-order-btn {
+        padding: 4px 10px;
+    }
+
+    .my-orders .cart-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .my-orders .cart-table th,
+    .my-orders .cart-table td {
+        white-space: nowrap;
     }
 
 }

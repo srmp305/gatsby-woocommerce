@@ -23,17 +23,20 @@ const OrderDetails = () => {
     }
   }, []);
   return (
-    <Layout>    
+    <Layout>
+      <div className="my-account-content order-detail-page">    
       <div className="container">
-        <div className="col-md-6">
+        <div className="row">
+        <div className="col-md-8">
           {!loading ? (
             <div className="latest-order">
-              <h3>Order ID : {order.number}</h3>
-              <h3>Order Date : {getFormattedDate(order.date_created.date)}</h3>
-              <h3>Payment mode : {order.payment_method_title}</h3>
-              <h3>Tax amount : {order.total_tax}</h3>
-              <h3>Order total : {order.total}</h3>
-              <h3>Order status : {order.status}</h3>
+              <h2>Order Detail</h2>
+              <p>Order ID : <span>{order.number}</span></p>
+              <p>Order Date : <span>{getFormattedDate(order.date_created.date)}</span></p>
+              <p>Payment mode : <span>{order.payment_method_title}</span></p>
+              <p>Tax amount : <span>{order.total_tax}</span></p>
+              <p>Order total : <span>{order.total}</span></p>
+              <p>Order status : <span>{order.status}</span></p>
               {order.products.map((el, i) => {
                 return (
                   <div className="latet-order-list">
@@ -53,25 +56,29 @@ const OrderDetails = () => {
                   </div>
                 );
               })}
-
-              <h2>Billing Information</h2>
-              <h3>
-                {order.billing.first_name} {order.billing.last_name}
-              </h3>
-              <h3>{order.billing.phone}</h3>
-              <h3>{order.billing.email}</h3>
-              <h3>{order.billing.address_1}</h3>
-              <h3>{order.billing.address_2}</h3>
-              <h3>{order.billing.company}</h3>
-              <h3>{order.billing.city}</h3>
-              <h3>{order.billing.state}</h3>
-              <h3>{order.billing.country}</h3>
-              <h3>{order.billing.postcode}</h3>
             </div>
+          
           ) : (
             <div>Please wait ...</div>
           )}
         </div>
+
+
+            {!loading && <div className="col-md-4">
+        <div className="latest-order billing-info">
+              <h2>Billing Information</h2>
+              <h5>
+                {order.billing.first_name} {order.billing.last_name}
+              </h5>
+              <p>Phone: {order.billing.phone}</p>
+              <p>Email: {order.billing.email}</p>
+              <p>Company: {order.billing.company}</p>
+              <p>Address: {order.billing.address_1}, {order.billing.address_2}, {order.billing.city}, {order.billing.state}, {order.billing.country}, {order.billing.postcode}</p>
+
+            </div>
+            </div>  }
+            </div>  
+      </div>
       </div>
     </Layout>
   );
