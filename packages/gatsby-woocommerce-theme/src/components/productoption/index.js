@@ -7,10 +7,10 @@ import product2 from "../../images/product2.png";
 import product3 from "../../images/product3.png";
 import product4 from "../../images/product4.png";
 
-const ProductOption = () => {
+const ProductOption = ({ attributes, handleChangeVarients, variation }) => {
   return (
     <div className="product-option">
-      <div className="option-include">
+      {/* <div className="option-include">
         <h2>Related Products</h2>
         <ul>
           <li>
@@ -29,41 +29,29 @@ const ProductOption = () => {
             Guava Pastry <span>(5 pieces)</span>
           </li>
         </ul>
-      </div>
+      </div> */}
 
       <div className="select-option">
-        <h2>Select Options</h2>
+        {/* <h2>Select Options</h2> */}
         <form>
-          <div className="form-group">
-            <label>Choice #1 *</label>
-            <select className="form-control">
-              <option>Beef Empandas</option>
-              <option>Chicken Empanda</option>
-              <option>Spinach Emanadas</option>
-              <option>Ham Croquetas</option>
-              <option>Guava Pastries</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Choice #2 *</label>
-            <select className="form-control">
-              <option>Beef Empandas</option>
-              <option>Chicken Empanda</option>
-              <option>Spinach Emanadas</option>
-              <option>Ham Croquetas</option>
-              <option>Guava Pastries</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Choice #3 *</label>
-            <select className="form-control">
-              <option>Beef Empandas</option>
-              <option>Chicken Empanda</option>
-              <option>Spinach Emanadas</option>
-              <option>Ham Croquetas</option>
-              <option>Guava Pastries</option>
-            </select>
-          </div>
+          {attributes.map((el) => {
+            return (
+              <div className="form-group" key={el.id}>
+                <label>{el.label}*</label>
+                <select
+                  className="form-control"
+                  onChange={(event) => handleChangeVarients(event, el.name)}
+                >
+                  {variation && variation[el.name] ? null : (
+                    <option>Select</option>
+                  )}
+                  {el.options.map((el) => {
+                    return <option>{el}</option>;
+                  })}
+                </select>
+              </div>
+            );
+          })}
         </form>
       </div>
     </div>

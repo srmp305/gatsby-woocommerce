@@ -13,9 +13,12 @@ import ProductOption from "../productoption";
 const productImagePlaceholder = "https://via.placeholder.com/434";
 
 const SingleProduct = (props) => {
-	const allProductsExcept = props.allProducts.filter(el=>el.id !== props.product.id)
+  const allProductsExcept = props.allProducts.filter(
+    (el) => el.id !== props.product.id
+  );
   const { product } = props;
   const [count, setCount] = useState(1);
+  const [variation, setVariation] = useState(null);
   const hasImagesSizes =
     !isEmpty(product.image) && !isEmpty(product.image.mediaDetails.sizes);
   const imgSrcUrl = hasImagesSizes ? product.image.sourceUrl : "";
@@ -49,12 +52,26 @@ const SingleProduct = (props) => {
       return null;
     }
   };
-
+  const getVariationLength = (el) => {
+    if (el) {
+      var size = 0,
+        key;
+      for (key in el) {
+        if (el.hasOwnProperty(key)) size++;
+      }
+      return size;
+    } else {
+      return 0;
+    }
+  };
+  const handleChangeVarients = (event, name) => {
+    setVariation({ ...variation, [name]: event.target.value });
+  };
   return (
     // @TODO Need to handle Group products differently.
     !isEmpty(product) && "GroupProduct" !== product.nodeType ? (
       <div className="single-product-page">
-  
+        {console.log(product, "product")}
         <div className="container">
           <div className="row">
             <div className="col-lg-5 col-md-6 mb-5 product-image-wrap">
@@ -78,7 +95,13 @@ const SingleProduct = (props) => {
                   />
                 ) : null}
 
-                {/* <ProductOption /> */}
+                {product.attributes && (
+                  <ProductOption
+                    attributes={product.attributes.nodes}
+                    handleChangeVarients={handleChangeVarients}
+                    variation={variation}
+                  />
+                )}
 
                 <div className="single-product-add-to-cart">
                   <div className="increament-input">
@@ -96,8 +119,15 @@ const SingleProduct = (props) => {
                       <i className="fa fa-plus"></i>
                     </button>
                   </div>
-
-                  <AddToCartButton product={product} />
+                  {console.log(variation, "variation")}
+                  {product.attributes ? (
+                    product.attributes.nodes.length ===
+                      getVariationLength(variation) && (
+                      <AddToCartButton product={product} variation={variation}/>
+                    )
+                  ) : (
+                    <AddToCartButton product={product} />
+                  )}
 
                   <WishListIcon />
                 </div>
@@ -105,7 +135,10 @@ const SingleProduct = (props) => {
             </div>
           </div>
 
-          <RelatedProducts allProducts={allProductsExcept} categoriesData={product.categoriesData}/>
+          <RelatedProducts
+            allProducts={allProductsExcept}
+            categoriesData={product.categoriesData}
+          />
         </div>
       </div>
     ) : null

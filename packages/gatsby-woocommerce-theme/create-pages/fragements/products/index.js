@@ -1,4 +1,4 @@
-const { ImageFragment } = require('../image/index.js');
+const { ImageFragment } = require("../image/index.js");
 
 const ProductsFragment = `
 fragment ProductsFragment on WpProduct {
@@ -7,6 +7,17 @@ fragment ProductsFragment on WpProduct {
         nodeType
         link
         description
+           attributes {
+          nodes {
+            id
+            label
+            name
+            options
+            position
+            variation
+            visible
+          }
+        }
         galleryImages {
           nodes {
             id
@@ -29,6 +40,21 @@ fragment ProductsFragment on WpProduct {
           name
           price
         }
+           ... on WpSubscriptionProduct {
+              id
+              name
+              price
+              trailstart
+              trialend
+              subscription_length
+              status
+              sku
+              salePrice
+              regularPrice
+              description
+              billingcycle
+              billingperiod
+            }
         ... on WpVariableProduct {
           id
           name
@@ -54,7 +80,7 @@ fragment ProductsFragment on WpProduct {
           }
         }
       }
-      ${ ImageFragment }
+      ${ImageFragment}
 `;
 
 module.exports.ProductsFragment = ProductsFragment;

@@ -71,6 +71,21 @@ export default () => {
                   price
                   externalUrl
                 }
+                ... on WpSubscriptionProduct {
+                  id
+                  name
+                  price
+                  trailstart
+                  trialend
+                  subscription_length
+                  status
+                  sku
+                  salePrice
+                  regularPrice
+                  description
+                  billingcycle
+                  billingperiod
+                }
                 ... on WpGroupProduct {
                   id
                   name
@@ -116,7 +131,7 @@ export default () => {
         data ? (
           <>
             <div className="product-container row">
-            {console.log(data,'rest')}
+              {console.log(data, "rest")}
               {data.products.edges.map((product) => (
                 <Product
                   key={product.node.id}

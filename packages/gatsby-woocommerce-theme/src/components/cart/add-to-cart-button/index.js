@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { AppContext } from "../../context/AppContext";
 import { getFormattedCart } from "../../../utils/functions";
@@ -7,12 +7,39 @@ import { v4 } from "uuid";
 import GET_CART from "../../../queries/get-cart";
 import ADD_TO_CART from "../../../mutations/add-to-cart";
 import "./style.scss";
-
+import axios from "axios";
+import { server } from "../../../config/keys";
 const AddToCart = (props) => {
   const { product } = props;
+  const [at, setAt] = useState(null);
+  const attributeFormat = async (attribute) => {
+    const arr = [];
+    if (!attribute) {
+      return arr;
+    }
+    const res = await axios.post(`${server}/wp-json/get/attribute/data`, {
+      product_id: product?.databaseId,
+    });
+    console.log(res,'resres')
+     if(res.status === 200){
+        Object.keys(attribute).forEach((el, i) => {
+        const obj = {
+          attributeName: res.data.name[i],
+          attributeValue: attribute[el],
+        };
+        arr.push(obj);
+      });
+     }
+    
+    
+  setAt([...arr]);
+    
+  };
+
   const productQtyInput = {
     clientMutationId: v4(), // Generate a unique id.
     productId: product?.databaseId,
+    variation: at,
   };
 
   /* eslint-disable */
@@ -62,11 +89,19 @@ const AddToCart = (props) => {
   });
 
   const handleAddToCartClick = () => {
-    console.log(product,'product')
+    console.log(product, "product");
     setRequestError(null);
-    addToCart();
+    if (props.variation) {
+      attributeFormat(props.variation);
+    } else {
+      addToCart();
+    }
   };
-
+  useEffect(() => {
+    if (at) {
+      addToCart();
+    }
+  }, [at]);
   return (
     <div>
       {/*	Check if its an external product then put its external buy link */}
@@ -74,6 +109,8 @@ const AddToCart = (props) => {
         <a href={product.externalUrl} target="_blank">
           <button className="btn btn-outline-dark">Buy Now</button>
         </a>
+      ) : "SubscriptionProduct" === product.nodeType ? (
+        <button className="btn btn-outline-dark" onClick={handleAddToCartClick}>Subscribe now</button>
       ) : (
         <button onClick={handleAddToCartClick} className="btn btn-outline-dark">
           Add to cart
