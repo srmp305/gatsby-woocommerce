@@ -14,7 +14,7 @@ import { userInstance } from "../../../config/axios.js";
 import axios from "axios";
 import { isUserLoggedIn } from "../../../utils/functions";
 import StripeCheckout from "../../../stripe";
-import {navigate} from "gatsby"
+import { navigate } from "gatsby";
 const auth = isUserLoggedIn();
 const CheckoutForm = () => {
   const initialState = {
@@ -180,7 +180,7 @@ const CheckoutForm = () => {
   const getPaymentResponse = (payment) => {
     if (payment && payment.data.status === "succeeded") {
       submitOrderFinal(true, payment.data.balance_transaction);
-    }else{
+    } else {
       submitOrderFinal(false, "00000000");
     }
   };
@@ -232,12 +232,14 @@ const CheckoutForm = () => {
       return false;
     }
   };
-if(!cart){
-  navigate("/")
-}
+  useEffect(() => {
+    if (!cart) {
+      navigate("/");
+    }
+  }, []);
   return (
     <>
-    {console.log(cart,'cart')}
+      {console.log(cart, "cart")}
       {cart ? (
         <form onSubmit={handleFormSubmit} className="woo-next-checkout-form">
           <div className="row">
@@ -283,8 +285,8 @@ if(!cart){
                     getCartTotal(cart) &&
                     validated && (
                       <StripeCheckout
-                      input={input}
-                      useremail={auth ? auth.user.email : null}
+                        input={input}
+                        useremail={auth ? auth.user.email : null}
                         sendPaymentResponse={getPaymentResponse}
                         amount={getCartTotal(cart)}
                       />

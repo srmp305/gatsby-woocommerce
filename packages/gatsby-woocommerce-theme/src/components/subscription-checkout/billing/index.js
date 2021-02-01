@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import countryList from "./../country-list";
 import Error from "./../error";
 import { isUserLoggedIn } from "../../../utils/functions";
@@ -10,9 +10,11 @@ const Billing = ({ input, handleOnChange, handleBillingAutoFill, billing }) => {
   const handleBilling = (e) => {
     handleBillingAutoFill(e.target.checked);
   };
-  if (!auth) {
+useEffect(()=>{
+    if (!auth) {
     navigate("/my-account");
   }
+},[])
   return (
     <React.Fragment>
       <h3>Billing Details</h3>
