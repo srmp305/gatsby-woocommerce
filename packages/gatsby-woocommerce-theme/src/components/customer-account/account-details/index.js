@@ -60,7 +60,7 @@ const AccountDetails = ({ authData, refreshUser }) => {
         localStorage.setItem("auth", JSON.stringify(dt));
         refreshUser();
       }
-      refreshJwtAuthToken();
+      // refreshJwtAuthToken();
     }
   
   };

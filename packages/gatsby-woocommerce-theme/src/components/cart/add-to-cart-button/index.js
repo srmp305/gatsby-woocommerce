@@ -20,20 +20,18 @@ const AddToCart = (props) => {
     const res = await axios.post(`${server}/wp-json/get/attribute/data`, {
       product_id: product?.databaseId,
     });
-    console.log(res,'resres')
-     if(res.status === 200){
-        Object.keys(attribute).forEach((el, i) => {
+    console.log(res, "resres");
+    if (res.status === 200) {
+      Object.keys(attribute).forEach((el, i) => {
         const obj = {
           attributeName: res.data.name[i],
           attributeValue: attribute[el],
         };
         arr.push(obj);
       });
-     }
-    
-    
-  setAt([...arr]);
-    
+    }
+
+    setAt([...arr]);
   };
 
   const productQtyInput = {
@@ -110,7 +108,12 @@ const AddToCart = (props) => {
           <button className="btn btn-outline-dark">Buy Now</button>
         </a>
       ) : "SubscriptionProduct" === product.nodeType ? (
-        <button className="btn btn-outline-dark" onClick={handleAddToCartClick}>Subscribe now</button>
+        <a href={`${product.link}`}>
+          <button className="btn btn-outline-dark">Subscribe now</button>
+        </a>
+        //  <button onClick={handleAddToCartClick} className="btn btn-outline-dark">
+        //   Add to cart
+        // </button>
       ) : (
         <button onClick={handleAddToCartClick} className="btn btn-outline-dark">
           Add to cart

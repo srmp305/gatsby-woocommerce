@@ -13,10 +13,10 @@ import CheckoutError from "../checkout-error";
 import { userInstance } from "../../../config/axios.js";
 import axios from "axios";
 import { isUserLoggedIn } from "../../../utils/functions";
+import { server } from "../../../config/keys";
 import StripeCheckout from "../../../stripe";
-import {navigate} from "gatsby"
 const auth = isUserLoggedIn();
-const CheckoutForm = () => {
+const CheckoutForm = ({ product, count, variation }) => {
   const initialState = {
     firstName: "",
     lastName: "",
@@ -60,12 +60,14 @@ const CheckoutForm = () => {
   //   errors: null,
   // };
 
-  const [cart, setCart] = useContext(AppContext);
+  const [cart, setCart] = useState(getFormattedCart(product));
   const [validated, setValidated] = useState(false);
   const [billing, setBilling] = useState(null);
   const [input, setInput] = useState(initialState);
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
+  const [checkoutLoading, setCheckoutLoading] = useState(null);
+  const [checkoutResponse, setCheckoutResponse] = useState(null);
   const getBillingInfo = async () => {
     // setLoading(true);
     if (auth && auth.user) {
@@ -138,28 +140,28 @@ const CheckoutForm = () => {
       const updatedCart = getFormattedCart(data);
       localStorage.setItem("woo-next-cart", JSON.stringify(updatedCart));
       // Update cart data in React Context.
-      setCart(updatedCart);
+      // setCart(updatedCart);
     },
   });
 
   // Checkout or CreateOrder Mutation.
-  const [
-    checkout,
-    { data: checkoutResponse, loading: checkoutLoading },
-  ] = useMutation(CHECKOUT_MUTATION, {
-    variables: {
-      input: orderData,
-    },
-    onCompleted: () => {
-      // console.warn( 'completed CHECKOUT_MUTATION' );
-      refetch();
-    },
-    onError: (error) => {
-      if (error) {
-        setRequestError(error.graphQLErrors[0].message);
-      }
-    },
-  });
+  // const [
+  //   checkout,
+  //   { data: checkoutResponse, loading: checkoutLoading },
+  // ] = useMutation(CHECKOUT_MUTATION, {
+  //   variables: {
+  //     input: orderData,
+  //   },
+  //   onCompleted: () => {
+  //     // console.warn( 'completed CHECKOUT_MUTATION' );
+  //     refetch();
+  //   },
+  //   onError: (error) => {
+  //     if (error) {
+  //       setRequestError(error.graphQLErrors[0].message);
+  //     }
+  //   },
+  // });
 
   /*
    * Handle form submit.
@@ -168,19 +170,42 @@ const CheckoutForm = () => {
    *
    * @return {void}
    */
-  const submitOrderFinal = (isPaid, transactionId) => {
-    const checkOutData = createCheckoutData({
-      ...input,
-      isPaid: isPaid,
-      transactionId: transactionId,
-    });
-    setOrderData(checkOutData);
+  const submitOrderFinal = async (isPaid, transactionId) => {
+    setCheckoutLoading(true);
+    const payload = {
+      product_id: product.databaseId,
+      attributes: variation,
+      quantity: count,
+      email: input.email,
+      first_name: input.firstName,
+      last_name: input.lastName,
+      user_email: auth ? auth.user.email : null,
+      billing_address_1: input.address1,
+      billing_address_2: input.address2,
+      billing_city: input.city,
+      billing_postcode: input.postcode,
+      billing_country: input.country,
+      billing_state: input.state,
+    };
+    const res = await axios.post(
+      `${server}/wp-json/create/order/subscription`,
+      payload
+    );
+    if (data) {
+      setCheckoutLoading(false);
+      setCheckoutResponse("Subscribed successfully..");
+    } else {
+      setCheckoutLoading(false);
+      setCheckoutResponse("Something went wrong. Please try again later.");
+    }
+    console.log("000", res);
+    // setOrderData(checkOutData);
     setRequestError(null);
   };
   const getPaymentResponse = (payment) => {
     if (payment && payment.data.status === "succeeded") {
       submitOrderFinal(true, payment.data.balance_transaction);
-    }else{
+    } else {
       submitOrderFinal(false, "00000000");
     }
   };
@@ -218,31 +243,29 @@ const CheckoutForm = () => {
   useEffect(() => {
     getBillingInfo();
   }, []);
-  useEffect(() => {
-    if (null !== orderData) {
-      // Call the checkout mutation when the value for orderData changes/updates.
-      /* eslint-disable */
-      checkout();
-    }
-  }, [orderData]);
-  const getCartTotal = (cart) => {
-    if (cart && cart.totalProductsPrice) {
-      return parseInt(cart.totalProductsPrice.split("$")[1] * 100);
+  // useEffect(() => {
+  //   if (null !== orderData) {
+  //     // Call the checkout mutation when the value for orderData changes/updates.
+  //     /* eslint-disable */
+  //     checkout();
+  //   }
+  // }, [orderData]);
+  const getCartTotal = (product) => {
+    if (product) {
+      return parseInt(product.price * count * 100);
     } else {
       return false;
     }
   };
-if(!cart){
-  navigate("/")
-}
+
   return (
     <>
-    {console.log(cart,'cart')}
-      {cart ? (
+      {console.log(product, "getFormattedCart(product)")}
+      {!checkoutResponse ? (
         <form onSubmit={handleFormSubmit} className="woo-next-checkout-form">
           <div className="row">
             <div className="col-md-12">
-              <h2>Checkout</h2>
+              <h2>Subscription checkout</h2>
             </div>
 
             <div className="col-md-8">
@@ -257,11 +280,10 @@ if(!cart){
             </div>
             <div className="col-md-4">
               <div className="checkout-sidebar">
-                <h3>Your Order</h3>
-
-                <YourOrder cart={cart} />
-
                 {/*Payment*/}
+                <h3>Your subscription</h3>
+
+                <YourOrder cart={product} count={count} />
                 {!validated && (
                   <PaymentModes input={input} handleOnChange={handleOnChange} />
                 )}
@@ -280,13 +302,13 @@ if(!cart){
                   )}
 
                   {input.paymentMethod === "stripe" &&
-                    getCartTotal(cart) &&
+                    getCartTotal(product) &&
                     validated && (
                       <StripeCheckout
-                      input={input}
-                      useremail={auth ? auth.user.email : null}
+                        input={input}
+                        useremail={auth ? auth.user.email : null}
                         sendPaymentResponse={getPaymentResponse}
-                        amount={getCartTotal(cart)}
+                        amount={getCartTotal(product)}
                       />
                     )}
                 </div>

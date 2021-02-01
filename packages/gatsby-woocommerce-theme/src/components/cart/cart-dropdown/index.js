@@ -29,7 +29,7 @@ const CartDropDown = ({ isDropdownOpen, setIsDropdownOpen }) => {
       setCart(updatedCart);
     },
   });
-
+ 
   // Update Cart Mutation.
   const [updateCart, { loading: updateCartProcessing }] = useMutation(
     UPDATE_CART,

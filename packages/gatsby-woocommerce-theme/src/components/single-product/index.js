@@ -9,7 +9,7 @@ import { sanitize } from "../../utils/functions";
 import WishListIcon from "../wishlist/wishlist-icon";
 import RelatedProducts from "../relatedproduct";
 import ProductOption from "../productoption";
-
+import SubscriptionCheckout from "../subscription-checkout/checkout-form";
 const productImagePlaceholder = "https://via.placeholder.com/434";
 
 const SingleProduct = (props) => {
@@ -19,6 +19,7 @@ const SingleProduct = (props) => {
   const { product } = props;
   const [count, setCount] = useState(1);
   const [variation, setVariation] = useState(null);
+  const [goForSubscription, setGoForSubscription] = useState(false);
   const hasImagesSizes =
     !isEmpty(product.image) && !isEmpty(product.image.mediaDetails.sizes);
   const imgSrcUrl = hasImagesSizes ? product.image.sourceUrl : "";
@@ -67,11 +68,15 @@ const SingleProduct = (props) => {
   const handleChangeVarients = (event, name) => {
     setVariation({ ...variation, [name]: event.target.value });
   };
+
+  const handleSubscription = () => {
+    setGoForSubscription(true);
+  };
   return (
     // @TODO Need to handle Group products differently.
     !isEmpty(product) && "GroupProduct" !== product.nodeType ? (
       <div className="single-product-page">
-        {console.log(product, "product")}
+        {console.log(product, "product", goForSubscription)}
         <div className="container">
           <div className="row">
             <div className="col-lg-5 col-md-6 mb-5 product-image-wrap">
@@ -85,7 +90,7 @@ const SingleProduct = (props) => {
             <div className="col-lg-7 col-md-6 mb-5">
               <div className="single-product-desc">
                 <h3>{product.name ? product.name : ""}</h3>
-                <h6 className="card-subtitle mb-3">{product.price}</h6>
+                <h6 className="card-subtitle mb-3">{"SubscriptionProduct" === product.nodeType ? "$" :""}{product.price}</h6>
 
                 {!isEmpty(product.description) ? (
                   <p
@@ -97,6 +102,7 @@ const SingleProduct = (props) => {
 
                 {product.attributes && (
                   <ProductOption
+                    disable={goForSubscription}
                     attributes={product.attributes.nodes}
                     handleChangeVarients={handleChangeVarients}
                     variation={variation}
@@ -106,6 +112,7 @@ const SingleProduct = (props) => {
                 <div className="single-product-add-to-cart">
                   <div className="increament-input">
                     <button
+                      disabled={goForSubscription}
                       className="decriment-btn"
                       onClick={() => setCount(count - 1)}
                     >
@@ -113,6 +120,7 @@ const SingleProduct = (props) => {
                     </button>
                     <input type="number" value={count} />
                     <button
+                      disabled={goForSubscription}
                       className="increament-btn"
                       onClick={() => setCount(count + 1)}
                     >
@@ -120,19 +128,42 @@ const SingleProduct = (props) => {
                     </button>
                   </div>
                   {console.log(variation, "variation")}
-                  {product.attributes ? (
-                    product.attributes.nodes.length ===
-                      getVariationLength(variation) && (
-                      <AddToCartButton product={product} variation={variation}/>
-                    )
-                  ) : (
-                    <AddToCartButton product={product} />
+                  {!goForSubscription && (
+                    <>
+                      {product.attributes ? (
+                        product.attributes.nodes.length ===
+                          getVariationLength(variation) &&
+                        ("SubscriptionProduct" === product.nodeType ? (
+                          <button
+                            className="btn btn-outline-dark"
+                            onClick={handleSubscription}
+                          >
+                            Subscribe now
+                          </button>
+                        ) : (
+                          <AddToCartButton
+                            product={product}
+                            variation={variation}
+                          />
+                        ))
+                      ) : "SubscriptionProduct" === product.nodeType ? (
+                        <button
+                          className="btn btn-outline-dark"
+                          onClick={handleSubscription}
+                        >
+                          Subscribe now
+                        </button>
+                      ) : (
+                        <AddToCartButton product={product} />
+                      )}
+                    </>
                   )}
 
                   <WishListIcon />
                 </div>
               </div>
-            </div>
+            </div>{" "}
+            {goForSubscription && <SubscriptionCheckout product={product} count={count} variation={variation}/>}
           </div>
 
           <RelatedProducts

@@ -7,7 +7,12 @@ import product2 from "../../images/product2.png";
 import product3 from "../../images/product3.png";
 import product4 from "../../images/product4.png";
 
-const ProductOption = ({ attributes, handleChangeVarients, variation }) => {
+const ProductOption = ({
+  attributes,
+  handleChangeVarients,
+  variation,
+  disable,
+}) => {
   return (
     <div className="product-option">
       {/* <div className="option-include">
@@ -39,6 +44,7 @@ const ProductOption = ({ attributes, handleChangeVarients, variation }) => {
               <div className="form-group" key={el.id}>
                 <label>{el.label}*</label>
                 <select
+                  disabled={disable}
                   className="form-control"
                   onChange={(event) => handleChangeVarients(event, el.name)}
                 >
