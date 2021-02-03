@@ -67,7 +67,7 @@ const Footer = ({ data }) => {
                   <li key={menu.node.databaseId}>
                     <Link
                       className="header-nav__menu-link"
-                      to={normalizePath(menu.node.url)}
+                      to={menu.node.url}
                     >
                       <i className="fa fa-angle-right"></i> {menu.node.label}
                     </Link>

@@ -14,7 +14,7 @@ import { userInstance } from "../../../config/axios.js";
 import axios from "axios";
 import { isUserLoggedIn } from "../../../utils/functions";
 import { server } from "../../../config/keys";
-import StripeCheckout from "../../../stripe";
+import StripeCheckout from "../../../subscription-stripe/stripe-subscribe-btn";
 const auth = isUserLoggedIn();
 const CheckoutForm = ({ product, count, variation }) => {
   const initialState = {
@@ -33,7 +33,7 @@ const CheckoutForm = ({ product, count, variation }) => {
     username: "",
     password: "",
     customerNote: "",
-    paymentMethod: "",
+    paymentMethod: "stripe",
     isPaid: false,
     errors: null,
     transactionId: null,
@@ -68,6 +68,7 @@ const CheckoutForm = ({ product, count, variation }) => {
   const [requestError, setRequestError] = useState(null);
   const [checkoutLoading, setCheckoutLoading] = useState(null);
   const [checkoutResponse, setCheckoutResponse] = useState(null);
+  const [orderIdd, setOrderIdd] = useState(null)
   const getBillingInfo = async () => {
     // setLoading(true);
     if (auth && auth.user) {
@@ -170,30 +171,35 @@ const CheckoutForm = ({ product, count, variation }) => {
    *
    * @return {void}
    */
-  const submitOrderFinal = async (isPaid, transactionId) => {
+  const submitOrderFinal = async (transactionId) => {
     setCheckoutLoading(true);
     const payload = {
-      product_id: product.databaseId,
-      attributes: variation,
-      quantity: count,
-      email: input.email,
-      first_name: input.firstName,
-      last_name: input.lastName,
-      user_email: auth ? auth.user.email : null,
-      billing_address_1: input.address1,
-      billing_address_2: input.address2,
-      billing_city: input.city,
-      billing_postcode: input.postcode,
-      billing_country: input.country,
-      billing_state: input.state,
+      customerEmail: input.email,
+      billingAddressCollection:`${input.firstName} ${input.lastName} ${input.address1} ${input.address2} ${input.city} ${input.country} ${input.postcode} ${input.state}`,
+      shippingAddressCollection:{
+      firstName: input.firstName,
+      lastName: input.lastName,
+      billingAddress1: input.address1,
+      billingAddress2: input.address2,
+      billingCity: input.city,
+      billingPostcode: input.postcode,
+      billingCountry: input.country,
+      billingState: input.state,
+      },
+      items:[{sku: product.wpStripeProduct.stripePriceId, quantity:count}]
     };
     const res = await axios.post(
       `${server}/wp-json/create/order/subscription`,
       payload
     );
-    if (data) {
+       console.log(res,'ress')
+    if (res.status === 200) {
+      if(res.data){
+  setValidated(true);
+  setOrderIdd(res.data)
+      }
       setCheckoutLoading(false);
-      setCheckoutResponse("Subscribed successfully..");
+      // setCheckoutResponse("Subscribed successfully..");
     } else {
       setCheckoutLoading(false);
       setCheckoutResponse("Something went wrong. Please try again later.");
@@ -219,7 +225,8 @@ const CheckoutForm = ({ product, count, variation }) => {
     if (input.paymentMethod === "cod") {
       submitOrderFinal(false, `cod_${new Date().getTime()}`);
     } else {
-      setValidated(true);
+      // submitOrderFinal()
+     setValidated(true);
     }
   };
 
@@ -257,7 +264,22 @@ const CheckoutForm = ({ product, count, variation }) => {
       return false;
     }
   };
-
+    const payload = {
+      customerEmail: auth.user.email,
+      billingAddressCollection:`required`,
+      shippingAddressCollection: {
+    allowedCountries: ['US', 'CA'],
+  },
+      // shippingAddressCollection:{
+      // recipient: input.firstName +" " + input.lastName,
+      // addressLine: [input.address1, input.address2],
+      // city: input.city,
+      // postalCode: input.postcode,
+      // country: input.country,
+      // region: input.state,
+      // },
+      //items:[{sku: product.wpStripeProduct.stripePriceId, quantity:count, variation}]
+    };
   return (
     <>
       {console.log(product, "getFormattedCart(product)")}
@@ -268,7 +290,7 @@ const CheckoutForm = ({ product, count, variation }) => {
               <h2>Subscription checkout</h2>
             </div>
 
-            <div className="col-md-8">
+            {/* <div className="col-md-8">
               <div className="checkout-form">
                 <Billing
                   billing={billing}
@@ -277,8 +299,8 @@ const CheckoutForm = ({ product, count, variation }) => {
                   handleBillingAutoFill={handleBillingAutoFill}
                 />
               </div>
-            </div>
-            <div className="col-md-4">
+            </div> */}
+            <div className="col-md-12">
               <div className="checkout-sidebar">
                 {/*Payment*/}
                 <h3>Your subscription</h3>
@@ -295,21 +317,24 @@ const CheckoutForm = ({ product, count, variation }) => {
                     other purposes described in our privacy policy.
                   </p>
 
-                  {!validated && (
+                  {/* {!validated && (
                     <button className="place-order" type="submit">
                       Place Order
                     </button>
-                  )}
+                  )} */}
 
                   {input.paymentMethod === "stripe" &&
                     getCartTotal(product) &&
-                    validated && (
+                    (
                       <StripeCheckout
-                        input={input}
-                        useremail={auth ? auth.user.email : null}
-                        sendPaymentResponse={getPaymentResponse}
-                        amount={getCartTotal(product)}
-                      />
+                         orderId={orderIdd}
+                         amount={getCartTotal(product)/100} 
+                         priceId={product.wpStripeProduct.stripePriceId}
+                         quantity={count}
+                         payload={payload}
+                         productId={product.databaseId}
+                         variation={variation}
+                          />
                     )}
                 </div>
                 {/* Checkout Loading*/}

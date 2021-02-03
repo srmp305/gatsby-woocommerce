@@ -92,7 +92,7 @@ export const afterware = new ApolloLink( ( operation, forward ) => {
 // Apollo GraphQL client.
 export const client = new ApolloClient({
 	link: middleware.concat( afterware.concat( createHttpLink({
-		uri: `${process.env.GATSBY_WORDPRESS_SITE_URL}/graphql`,
+		uri: `${"https://admin.sergiosmarketplace.com"}/graphql`,
 		fetch: fetch
 	}) ) ),
 	cache: new InMemoryCache()

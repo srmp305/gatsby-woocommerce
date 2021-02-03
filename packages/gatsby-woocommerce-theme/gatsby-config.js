@@ -84,7 +84,7 @@ module.exports = ({
         background_color: `#eaeaea`,
         theme_color: `#1e1e1e`,
         display: `standalone`,
-        icon: `${__dirname}/src/images/favicon.png`, // For favicon- This path is relative to the root of the site.
+        icon: `${__dirname}/src/images/sergios-s.png`, // For favicon- This path is relative to the root of the site.
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
