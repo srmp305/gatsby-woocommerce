@@ -68,11 +68,11 @@ module.exports = ({
       },
     },
     {
-      resolve: "gatsby-plugin-robots-txt",
+      resolve: 'gatsby-plugin-robots-txt',
       options: {
         host: gatsbySiteUrl,
         sitemap: `${gatsbySiteUrl}/sitemap.xml`,
-        policy: [{ userAgent: "*", allow: ["/"] }],
+        policy: [{ userAgent: '*', allow: ['/'] }],
       },
     },
     {
@@ -90,5 +90,12 @@ module.exports = ({
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-source-instagram-all`,
+      options: {
+        access_token:
+          'IGQVJVa2ZASVHlGOW5oV01NcnpMb044VkJ0YmxIRUVVSVhqRVRmMlJvNlZA6aENTRjFsMnhJNDFjWFhDcUk5ZATAta2NWUGNULXFjLURGTUNQSzZAvbmZAHWFlWMlVJZA2xLdWM2cnFxNVd5YmNidjBlbUt3eAZDZD',
+      },
+    },
   ],
 });
