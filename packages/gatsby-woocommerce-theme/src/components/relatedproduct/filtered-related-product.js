@@ -70,7 +70,7 @@ const FilteredRelatedProduct = ({ allProducts, categoriesData }) => {
             ) : null}
           </>
         );
-      })}
+      })
       }
     </>
   );
