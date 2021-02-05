@@ -143,7 +143,8 @@ const SingleProduct = (props) => {
                       {product.attributes ? (
                         product.attributes.nodes.length ===
                           getVariationLength(variation) &&
-                        ('SubscriptionProduct' === product.nodeType ? (
+                        ('SubscriptionProduct' === product.nodeType ||
+                        'VariablesubscriptionProduct' === product.nodeType ? (
                           <button
                             className="btn btn-outline-dark"
                             onClick={handleSubscription}
@@ -156,7 +157,8 @@ const SingleProduct = (props) => {
                             variation={variation}
                           />
                         ))
-                      ) : 'SubscriptionProduct' === product.nodeType ? (
+                      ) : 'SubscriptionProduct' === product.nodeType ||
+                        'VariablesubscriptionProduct' === product.nodeType ? (
                         <button
                           className="btn btn-outline-dark"
                           onClick={handleSubscription}
