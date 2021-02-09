@@ -59,6 +59,25 @@ fragment ProductsFragment on WpProduct {
             stripeProductId
           }
             }
+            ... on WpVariablesubscriptionProduct {
+              id
+              name
+              price
+              trailstart
+              trialend
+              subscription_length
+              status
+              sku
+              salePrice
+              regularPrice
+              description
+              billingcycle
+              billingperiod
+              wpStripeProduct {
+                stripePriceId
+                stripeProductId
+              }
+            }
         ... on WpVariableProduct {
           id
           name
