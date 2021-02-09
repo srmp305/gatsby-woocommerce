@@ -86,6 +86,21 @@ export default () => {
                   billingcycle
                   billingperiod
                 }
+                ... on WpVariablesubscriptionProduct {
+                  id
+                  name
+                  price
+                  trailstart
+                  trialend
+                  subscription_length
+                  status
+                  sku
+                  salePrice
+                  regularPrice
+                  description
+                  billingcycle
+                  billingperiod
+                }
                 ... on WpGroupProduct {
                   id
                   name
