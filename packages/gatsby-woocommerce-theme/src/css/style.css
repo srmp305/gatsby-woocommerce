@@ -2441,6 +2441,42 @@ body {
     margin-top: 10px;
 }
 
+
+
+.message-content {
+    background: #f3f3f3;
+    padding: 80px 0px;
+}
+
+.messagae-box {
+    max-width: 500px;
+    background: #fff;
+    margin: 0px auto;
+    padding: 50px;
+    text-align: center;
+}
+
+.messagae-box img {
+    width: 100px;
+    margin: 0px auto;
+    display: block;
+    margin-bottom: 20px;
+}
+
+
+.messagae-box h2 {
+    font-weight: 600;
+}
+
+.messagae-box p {
+    font-size: 18px;
+}
+
+
+
+
+
+
 /**********************************************************************/
 /**************************** Media Query *****************************/
 /**********************************************************************/
