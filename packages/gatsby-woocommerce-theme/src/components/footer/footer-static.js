@@ -1,19 +1,14 @@
-import Link from "gatsby-link";
-import { normalizePath, sanitize } from "../../utils/functions";
+import Link from 'gatsby-link';
+import { normalizePath, sanitize } from '../../utils/functions';
 
-import insta1 from "../../images/insta1.png";
-import insta2 from "../../images/insta2.png";
-import insta3 from "../../images/insta3.png";
-import insta4 from "../../images/insta4.png";
-import insta5 from "../../images/insta5.png";
-import insta6 from "../../images/insta6.png";
-import address from "../../images/addressicon.svg";
-import phone from "../../images/phoneicon.svg";
-import fb from "../../images/facebook.svg";
-import twitter from "../../images/twitter.svg";
-import insta from "../../images/instagram.svg";
+import address from '../../images/addressicon.svg';
+import phone from '../../images/phoneicon.svg';
+import fb from '../../images/facebook.svg';
+import twitter from '../../images/twitter.svg';
+import insta from '../../images/instagram.svg';
+import InstaFeed from '../instafeed/instafeed';
 
-import React from "react";
+import React from 'react';
 
 const Footer = ({ data }) => {
   const {
@@ -65,10 +60,7 @@ const Footer = ({ data }) => {
               <ul>
                 {footerMenuItems.edges.map((menu) => (
                   <li key={menu.node.databaseId}>
-                    <Link
-                      className="header-nav__menu-link"
-                      to={menu.node.url}
-                    >
+                    <Link className="header-nav__menu-link" to={menu.node.url}>
                       <i className="fa fa-angle-right"></i> {menu.node.label}
                     </Link>
                   </li>
@@ -76,7 +68,7 @@ const Footer = ({ data }) => {
               </ul>
             </div>
           ) : (
-            ""
+            ''
           )}
 
           <div className="footer-box footer-three">
@@ -99,12 +91,7 @@ const Footer = ({ data }) => {
             <h2>{wpContactQuery.instagramTitleFooter}</h2>
 
             <div className="insta-post">
-              <img src={insta1} alt="" />
-              <img src={insta2} alt="" />
-              <img src={insta3} alt="" />
-              <img src={insta4} alt="" />
-              <img src={insta5} alt="" />
-              <img src={insta6} alt="" />
+              <InstaFeed />
             </div>
           </div>
         </div>

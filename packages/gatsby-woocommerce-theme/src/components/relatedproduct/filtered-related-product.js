@@ -1,17 +1,17 @@
-import React from "react";
-import AddToCartButton from "../cart/add-to-cart-button";
-import AddToWishList from "../wishlist/add-to-wishlist";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { isEmpty } from "lodash";
-import Link from "gatsby-link";
-const productImagePlaceholder = "https://via.placeholder.com/434";
+import React from 'react';
+import AddToCartButton from '../cart/add-to-cart-button';
+import AddToWishList from '../wishlist/add-to-wishlist';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { isEmpty } from 'lodash';
+import Link from 'gatsby-link';
+const productImagePlaceholder = 'https://via.placeholder.com/434';
 const FilteredRelatedProduct = ({ allProducts, categoriesData }) => {
   const data = [];
   categoriesData.forEach((element) => {
     const t = allProducts.filter(
       (el) =>
         el.categoriesData.length &&
-        el.categoriesData.filter((ell) => ell === element).length
+        el.categoriesData.filter((ell) => ell === element).length,
     );
     t.forEach((el) => data.push(el));
   });
@@ -22,7 +22,7 @@ const FilteredRelatedProduct = ({ allProducts, categoriesData }) => {
           !isEmpty(product.image) && !isEmpty(product.image.mediaDetails.sizes);
         const imgSrcUrl = hasImagesSizes
           ? product.image.mediaDetails.sizes[3].sourceUrl
-          : "";
+          : '';
         const imgWidth = hasImagesSizes
           ? product.image.mediaDetails.sizes[3].width
           : 320;
@@ -32,14 +32,14 @@ const FilteredRelatedProduct = ({ allProducts, categoriesData }) => {
         return (
           <>
             {!isEmpty(product) &&
-            "GroupProduct" !== product.nodeType &&
+            'GroupProduct' !== product.nodeType &&
             i < 4 ? (
               <div className="col-lg-3 col-md-6 mb-5">
                 <Link to={product.link} className="product-image">
                   {!isEmpty(product.image) ? (
                     <figure>
                       <LazyLoadImage
-                        alt={product.image.altText ? product.image.altText : ""}
+                        alt={product.image.altText ? product.image.altText : ''}
                         height={imgHeight}
                         src={imgSrcUrl}
                         width={imgWidth}
@@ -60,7 +60,7 @@ const FilteredRelatedProduct = ({ allProducts, categoriesData }) => {
                 </Link>
                 <div className="card-body text-center">
                   <h3 className="card-header">
-                    {product.name ? product.name : ""}
+                    {product.name ? product.name : ''}
                   </h3>
                   <h6 className="card-subtitle">{product.price}</h6>
                   <AddToCartButton product={product} />
@@ -70,8 +70,7 @@ const FilteredRelatedProduct = ({ allProducts, categoriesData }) => {
             ) : null}
           </>
         );
-      })
-      }
+      })}
     </>
   );
 };

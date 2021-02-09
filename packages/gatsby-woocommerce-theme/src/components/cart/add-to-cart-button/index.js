@@ -1,14 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { AppContext } from "../../context/AppContext";
-import { getFormattedCart } from "../../../utils/functions";
-import Link from "gatsby-link";
-import { v4 } from "uuid";
-import GET_CART from "../../../queries/get-cart";
-import ADD_TO_CART from "../../../mutations/add-to-cart";
-import "./style.scss";
-import axios from "axios";
-import { server } from "../../../config/keys";
+import React, { useState, useContext, useEffect } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { AppContext } from '../../context/AppContext';
+import { getFormattedCart } from '../../../utils/functions';
+import Link from 'gatsby-link';
+import { v4 } from 'uuid';
+import GET_CART from '../../../queries/get-cart';
+import ADD_TO_CART from '../../../mutations/add-to-cart';
+import './style.scss';
+import axios from 'axios';
+import { server } from '../../../config/keys';
 const AddToCart = (props) => {
   const { product } = props;
   const [at, setAt] = useState(null);
@@ -20,7 +20,7 @@ const AddToCart = (props) => {
     const res = await axios.post(`${server}/wp-json/get/attribute/data`, {
       product_id: product?.databaseId,
     });
-    console.log(res, "resres");
+    console.log(res, 'resres');
     if (res.status === 200) {
       Object.keys(attribute).forEach((el, i) => {
         const obj = {
@@ -52,7 +52,7 @@ const AddToCart = (props) => {
 
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-      localStorage.setItem("woo-next-cart", JSON.stringify(updatedCart));
+      localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
       // Update cart data in React Context.
       setCart(updatedCart);
     },
@@ -87,7 +87,7 @@ const AddToCart = (props) => {
   });
 
   const handleAddToCartClick = () => {
-    console.log(product, "product");
+    console.log(product, 'product');
     setRequestError(null);
     if (props.variation) {
       attributeFormat(props.variation);
@@ -103,18 +103,19 @@ const AddToCart = (props) => {
   return (
     <div>
       {/*	Check if its an external product then put its external buy link */}
-      {"ExternalProduct" === product.nodeType ? (
+      {'ExternalProduct' === product.nodeType ? (
         <a href={product.externalUrl} target="_blank">
           <button className="btn btn-outline-dark">Buy Now</button>
         </a>
-      ) : "SubscriptionProduct" === product.nodeType ? (
+      ) : 'SubscriptionProduct' === product.nodeType ||
+        'VariablesubscriptionProduct' === product.nodeType ? (
         <a href={`${product.link}`}>
           <button className="btn btn-outline-dark">Subscribe now</button>
         </a>
+      ) : (
         //  <button onClick={handleAddToCartClick} className="btn btn-outline-dark">
         //   Add to cart
         // </button>
-      ) : (
         <button onClick={handleAddToCartClick} className="btn btn-outline-dark">
           Add to cart
         </button>
@@ -126,13 +127,13 @@ const AddToCart = (props) => {
           </button>
         </Link>
       ) : (
-        ""
+        ''
       )}
       {/* Add To Cart Loading*/}
       {addToCartLoading ? (
         <p className="mt-2">Adding to Cart...</p>
       ) : (
-        <p className="mt-2" style={{ color: "transparent" }}>
+        <p className="mt-2" style={{ color: 'transparent' }}>
           Adding to Cart...
         </p>
       )}
