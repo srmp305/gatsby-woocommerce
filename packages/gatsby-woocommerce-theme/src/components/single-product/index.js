@@ -25,7 +25,7 @@ const SingleProduct = (props) => {
   const [goForSubscription, setGoForSubscription] = useState(false);
   const hasImagesSizes =
     !isEmpty(product.image) && !isEmpty(product.image.mediaDetails.sizes);
-  const imgSrcUrl = hasImagesSizes ? product.image.sourceUrl : '';
+  const imgSrcUrl = hasImagesSizes && product.image.sourceUrl ? product.image.sourceUrl : '';
 
   const displayProductImages = () => {
     if (!isEmpty(product.galleryImages.nodes)) {

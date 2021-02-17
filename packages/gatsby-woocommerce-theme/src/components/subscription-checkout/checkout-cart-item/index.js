@@ -1,4 +1,6 @@
 import React from "react";
+const productImagePlaceholder = 'https://via.placeholder.com/42';
+
 const CheckoutCartItem = ({ item,count }) => {
   return (
     <tr key={item.productId}>
@@ -6,9 +8,9 @@ const CheckoutCartItem = ({ item,count }) => {
         <div className="cart-product">
           <div className="cart-product-img">
             <img
-              src={item.image.sourceUrl}
-              srcSet={item.image.srcSet}
-              alt={item.image.title}
+              src={item.image?item.image.sourceUrl:productImagePlaceholder}
+              srcSet={item.image?item.image.srcSet:''}
+              alt={item.image?item.image.title:''}
             />
           </div>
           <div className="cart-product-detail">
