@@ -5,11 +5,29 @@ import { loadStripe } from '@stripe/stripe-js';
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
 
+
 const origin = 'undefined' !== typeof window ? window.location.origin : '';
 const StripeSubscribeBtn=({orderId,priceId,quantity,amount,payload,variation,productId})=>{
   const handleClick = async (event) => {
     // When the customer clicks on the button, redirect them to Checkout.
     const stripe = await stripePromise;
+    let urlData='';
+    const variations =(input) => Object.entries(input).forEach(([key,value]) => {
+      urlData+='&'+key+'='+value;
+    })
+    variations(variation);
+    let dd = {
+      lineItems: [
+        // Replace with the ID of your price
+        {price: priceId, quantity: quantity}
+      ],
+      
+      ...payload,
+      mode: 'subscription',
+      successUrl: `${origin}/success?pid=${productId}&priceId=${priceId}`,
+      cancelUrl: `${origin}/cancel`,
+    }
+    console.log('dd',dd,urlData)
     const { error } = await stripe.redirectToCheckout({
       lineItems: [
         // Replace with the ID of your price
@@ -18,7 +36,7 @@ const StripeSubscribeBtn=({orderId,priceId,quantity,amount,payload,variation,pro
       
       ...payload,
       mode: 'subscription',
-      successUrl: `${origin}/success?pid=${productId}&attr1=${variation.attr1}&attr2=${variation.attr2}`,
+      successUrl: `${origin}/success?pid=${productId}&priceId=${priceId}${urlData}`,
       cancelUrl: `${origin}/cancel`,
     });
     // If `redirectToCheckout` fails due to a browser or network

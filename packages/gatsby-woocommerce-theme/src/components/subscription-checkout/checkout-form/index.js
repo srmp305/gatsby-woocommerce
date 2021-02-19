@@ -186,7 +186,7 @@ const CheckoutForm = ({ product, count, variation }) => {
       billingCountry: input.country,
       billingState: input.state,
       },
-      items:[{sku: product.wpStripeProduct.stripePriceId, quantity:count}]
+      items:[{sku: product.stripePriceId, quantity:count}]
     };
     const res = await axios.post(
       `${server}/wp-json/create/order/subscription`,
@@ -329,7 +329,7 @@ const CheckoutForm = ({ product, count, variation }) => {
                       <StripeCheckout
                          orderId={orderIdd}
                          amount={getCartTotal(product)/100} 
-                         priceId={product.wpStripeProduct.stripePriceId}
+                         priceId={product.stripePriceId}
                          quantity={count}
                          payload={payload}
                          productId={product.databaseId}
