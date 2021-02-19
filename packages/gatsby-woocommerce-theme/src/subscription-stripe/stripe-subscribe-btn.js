@@ -15,7 +15,10 @@ const StripeSubscribeBtn=({orderId,priceId,quantity,amount,payload,variation,pro
     const variations =(input) => Object.entries(input).forEach(([key,value]) => {
       urlData+='&'+key+'='+value;
     })
-    variations(variation);
+    if (variation) {
+      variations(variation);
+    }
+    
     let dd = {
       lineItems: [
         // Replace with the ID of your price
