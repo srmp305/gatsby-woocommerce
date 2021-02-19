@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import { loadStripe } from '@stripe/stripe-js';
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-// const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
-const stripePromise = loadStripe("pk_test_51I9WtPIL4YSz38Wm3eG1Gkvmp3y8ewXqQF5kCfItAwSKT9vbm4YXc0VqnoSXYCn8nULsYkQwEmODhuUMr2XvqP3i00SxhutLqY");
+const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
 
 
 const origin = 'undefined' !== typeof window ? window.location.origin : '';
