@@ -54,7 +54,9 @@ const Product = (props) => {
         </Link>
         <div className="card-body text-center">
           <h3 className="card-header">{product.name ? product.name : ""}</h3>
+          <p dangerouslySetInnerHTML={{__html: product.shortDescription.replace(/(<? *script)/gi, 'illegalscript')}}></p>
           <h6 className="card-subtitle">{product.price}</h6>
+          
           <AddToCartButton product={product} />
           <AddToWishList product={ product } />
         </div>
