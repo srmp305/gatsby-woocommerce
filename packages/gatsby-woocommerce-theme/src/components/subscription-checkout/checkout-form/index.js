@@ -14,6 +14,7 @@ import { userInstance } from "../../../config/axios.js";
 import axios from "axios";
 import { isUserLoggedIn } from "../../../utils/functions";
 import { server } from "../../../config/keys";
+import {Loader} from "../../loader";
 import StripeCheckout from "../../../subscription-stripe/stripe-subscribe-btn";
 const auth = isUserLoggedIn();
 const CheckoutForm = ({ product, count, variation }) => {
@@ -69,6 +70,7 @@ const CheckoutForm = ({ product, count, variation }) => {
   const [checkoutLoading, setCheckoutLoading] = useState(null);
   const [checkoutResponse, setCheckoutResponse] = useState(null);
   const [orderIdd, setOrderIdd] = useState(null)
+  const [isLoader, setIsLoader] = useState(false);
   const getBillingInfo = async () => {
     // setLoading(true);
     if (auth && auth.user) {
@@ -334,15 +336,18 @@ const CheckoutForm = ({ product, count, variation }) => {
                          payload={payload}
                          productId={product.databaseId}
                          variation={variation}
+                         setIsLoader = {setIsLoader}
                           />
                     )}
                 </div>
+                {isLoader && <Loader />}
                 {/* Checkout Loading*/}
                 {checkoutLoading && <p>Processing Order...</p>}
                 {requestError && <CheckoutError requestError={requestError} />}
               </div>
             </div>
           </div>
+          
         </form>
       ) : (
         ""

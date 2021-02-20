@@ -27,6 +27,7 @@ export default () => {
                 nodeType
                 link
                 description
+                shortDescription
                 galleryImages {
                   nodes {
                     id

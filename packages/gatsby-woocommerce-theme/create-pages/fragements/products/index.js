@@ -71,10 +71,7 @@ fragment ProductsFragment on WpProduct {
               description
               billingcycle
               billingperiod
-              wpStripeProduct {
-                stripePriceId
-                stripeProductId
-              }
+              allvariations
             }
         ... on WpVariableProduct {
           id
