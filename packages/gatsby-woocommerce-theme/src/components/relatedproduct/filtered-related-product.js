@@ -63,6 +63,7 @@ const FilteredRelatedProduct = ({ allProducts, categoriesData }) => {
                     {product.name ? product.name : ''}
                   </h3>
                   <h6 className="card-subtitle">{product.price}</h6>
+                  <div dangerouslySetInnerHTML={{__html: product.shortDescription}}></div>
                   <AddToCartButton product={product} />
                   <AddToWishList product={product} />
                 </div>

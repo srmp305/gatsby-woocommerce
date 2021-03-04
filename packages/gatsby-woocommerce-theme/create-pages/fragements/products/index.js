@@ -6,6 +6,7 @@ fragment ProductsFragment on WpProduct {
         databaseId
         nodeType
         link
+        shortDescription
         description
            attributes {
           nodes {
@@ -39,6 +40,7 @@ fragment ProductsFragment on WpProduct {
           id
           name
           price
+          shortDescription
         }
            ... on WpSubscriptionProduct {
               id
@@ -76,23 +78,27 @@ fragment ProductsFragment on WpProduct {
         ... on WpVariableProduct {
           id
           name
+          shortDescription
           price
         }
         ... on WpExternalProduct {
           id
           name
           price
+          shortDescription
           externalUrl
         }
         ... on WpGroupProduct {
           id
           name
+          shortDescription
           products {
             nodes {
               ... on WpSimpleProduct {
                 id
                 name
                 price
+                shortDescription
               }
             }
           }
