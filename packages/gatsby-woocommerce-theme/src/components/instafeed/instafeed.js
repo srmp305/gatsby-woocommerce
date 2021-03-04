@@ -12,16 +12,18 @@ export default () => {
               media_url
               id
               media_type
+              permalink
             }
           }
         }
       `}
       render={(data) => {
         const feed = data.allInstagramContent.nodes;
+        console.log(feed);
         return (
           <>
             {feed.map((el) => {
-              return <img src={el.media_url} alt="/" />;
+              return <a href={el.permalink}><img src={el.media_url} alt="/" /></a>;
             })}
           </>
         );
