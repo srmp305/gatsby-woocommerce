@@ -2591,14 +2591,15 @@ body {
         border-top: 1px solid #f3f3f3;
     }
 
-    .menu-visible+button.header-nav-menu-btn.hamburger::before {
+    nav.header-nav.menu-visible::before {
         content: "Menu";
-        position: fixed;
+        position: absolute;
         right: 130px;
-        font-weight: bold;
+        font-weight: 700;
         font-size: 18px;
         line-height: 22px;
-        color: #0A0E15;
+        color: #0a0e15;
+        top: 25px;
     }
 
     .hamburger.is-active:hover {
