@@ -78,7 +78,8 @@
     "typeface-montserrat": "0.0.75",
     "use-shopping-cart": "^2.3.0",
     "uuid": "^8.3.0",
-    "validator": "^13.1.1"
+    "validator": "^13.1.1",
+    "woocommerce-api": "^1.5.0"
   },
   "peerDependencies": {
     "gatsby": "^2.24.74",

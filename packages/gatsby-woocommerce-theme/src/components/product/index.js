@@ -24,6 +24,8 @@ const Product = (props) => {
     ? product.image.mediaDetails.sizes[3].height
     : 320;
 
+  console.log(imgSrcUrl)
+
   return (
     // @TODO Need to handle Group products differently.
     !isEmpty(product) && "GroupProduct" !== product.nodeType ? (

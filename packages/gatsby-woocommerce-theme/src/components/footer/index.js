@@ -8,14 +8,14 @@ import { graphql, StaticQuery } from "gatsby";
  * Internal dependencies.
  */
 import "./style.scss";
-import { Footer } from "./footer-static";
+import { FooterLayout } from "./footer-static";
 
 /**
  * This is default Component Export.
  *
  * @return {*}
  */
-export default () => {
+export default function Footer () {
   return (
     <StaticQuery
       query={graphql`
@@ -62,7 +62,7 @@ export default () => {
           }
         }
       `}
-      render={(data) => (data ? <Footer data={data} /> : null)}
+      render={(data) => (data ? <FooterLayout data={data} /> : null)}
     />
   );
 };
