@@ -7,8 +7,8 @@ module.exports = ({
   siteMetadata: {
     title: `Gatsby WooCommerce Theme`,
     description: `Codeytek - Gatsby WooCommerce Theme`,
-    siteUrl: gatsbySiteUrl,
-    wordPressSiteUrl: wordPressUrl,
+    siteUrl: process.env.GATSBY_SITE_URL,
+    wordPressSiteUrl: process.env.WORDPRESS_SITE_URL,
     author: `@imranhsayed`,
     fbAppId: fbAppId,
   },
@@ -34,7 +34,7 @@ module.exports = ({
     {
       resolve: `gatsby-source-wordpress-experimental`,
       options: {
-        url: `${wordPressUrl}/graphql`,
+        url: `https://admin.sergiosmarketplace.com/graphql`,
         verbose: true,
         develop: {
           nodeUpdateInterval: 30000,
@@ -68,11 +68,11 @@ module.exports = ({
       },
     },
     {
-      resolve: 'gatsby-plugin-robots-txt',
+      resolve: "gatsby-plugin-robots-txt",
       options: {
         host: gatsbySiteUrl,
         sitemap: `${gatsbySiteUrl}/sitemap.xml`,
-        policy: [{ userAgent: '*', allow: ['/'] }],
+        policy: [{ userAgent: "*", allow: ["/"] }],
       },
     },
     {
@@ -93,8 +93,8 @@ module.exports = ({
     {
       resolve: `gatsby-source-instagram-all`,
       options: {
-        access_token:
-          'IGQVJVVjFlMWQ3SHBoWVdUd2ZAPYTlBc3B4ZAGt4U2xPd0JGUU1LdHVXTEwtMm5vMVJTLUI5VkQyLVROV0VGYWp0ZATlmUEtZAcHQtY1lRd3VoVFVTLTFsc1p3aG0xSERRQ1RBSVdiUFI4RGgxbWd4dFhWYgZDZD',
+        // access_token:
+        //   "IGQVJVVjFlMWQ3SHBoWVdUd2ZAPYTlBc3B4ZAGt4U2xPd0JGUU1LdHVXTEwtMm5vMVJTLUI5VkQyLVROV0VGYWp0ZATlmUEtZAcHQtY1lRd3VoVFVTLTFsc1p3aG0xSERRQ1RBSVdiUFI4RGgxbWd4dFhWYgZDZD",
       },
     },
   ],

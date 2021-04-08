@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
-import { isEmpty, remove } from 'lodash';
-import DOMPurify from 'dompurify';
+import { isEmpty, remove } from "lodash";
+import DOMPurify from "dompurify";
 
 export const normalizePath = (path) => {
   const pathStr = path.split("/");
@@ -353,8 +353,6 @@ export const createCheckoutData = (order) => {
   return checkoutData;
 };
 
-
-
 /**
  * Get the updated items in the below format required for mutation input.
  *
@@ -433,7 +431,6 @@ export const isUserValidated = () => {
   return userLoggedInData;
 };
 
-
 /**
  * Function to get opengraph image.
  *
@@ -441,13 +438,16 @@ export const isUserValidated = () => {
  *
  * @return {void}
  */
-export const getOgImage = ( seo ) => {
+export const getOgImage = (seo) => {
+  if (
+    isEmpty(seo) ||
+    isEmpty(seo.opengraphImage) ||
+    isEmpty(seo.opengraphImage.sourceUrl)
+  ) {
+    return getDefaultOgImage(seo);
+  }
 
-	if ( isEmpty( seo ) || isEmpty( seo.opengraphImage ) || isEmpty( seo.opengraphImage.sourceUrl ) ) {
-		return getDefaultOgImage( seo );
-	}
-
-	return seo.opengraphImage.sourceUrl;
+  return seo.opengraphImage.sourceUrl;
 };
 
 /**
@@ -457,62 +457,59 @@ export const getOgImage = ( seo ) => {
  *
  * @return {void}
  */
-export const getDefaultOgImage = ( seo ) => {
+export const getDefaultOgImage = (seo) => {
+  if (
+    isEmpty(seo) ||
+    isEmpty(seo.social) ||
+    isEmpty(seo.social.facebook) ||
+    isEmpty(seo.social.facebook.defaultImage) ||
+    isEmpty(seo.social.facebook.defaultImage.sourceUrl)
+  ) {
+    return "";
+  }
 
-	if (
-		isEmpty( seo ) ||
-		isEmpty( seo.social ) ||
-		isEmpty( seo.social.facebook ) ||
-		isEmpty( seo.social.facebook.defaultImage ) ||
-		isEmpty( seo.social.facebook.defaultImage.sourceUrl )
-	) {
-		return '';
-	}
-
-	return seo.social.facebook.defaultImage.sourceUrl;
+  return seo.social.facebook.defaultImage.sourceUrl;
 };
 
 /**
  * Add to wish list
  * @param {Object} productData Product data.
  */
-export const addToWishList = ( productData ) => {
+export const addToWishList = (productData) => {
+  let updatedWishList;
 
-	let updatedWishList;
+  // Get the existing value of wishlist from localStorage.
+  const existingWishList = JSON.parse(localStorage.getItem("woo_wishlist"));
 
-	// Get the existing value of wishlist from localStorage.
-	const existingWishList = JSON.parse( localStorage.getItem( 'woo_wishlist' ) );
+  /**
+   * If its the first item
+   */
 
-	/**
-	 * If its the first item
-	 */
+  // Set it in localStorage and return.
+  if (isEmpty(existingWishList)) {
+    updatedWishList = addWishListToLocalStorage({
+      productIds: [productData.node.productId],
+      products: [productData],
+    });
+    return updatedWishList;
+  }
 
-	// Set it in localStorage and return.
-	if ( isEmpty( existingWishList ) ) {
-		updatedWishList = addWishListToLocalStorage( {
-			productIds: [ productData.node.productId ],
-			products: [ productData ]
-		} );
-		return updatedWishList;
-	}
+  /**
+   * If its not the first item
+   */
 
-	/**
-	 * If its not the first item
-	 */
+  // First set the updated wishlist to existing one.
+  updatedWishList = existingWishList;
 
-	// First set the updated wishlist to existing one.
-	updatedWishList = existingWishList;
+  // Then push the new items to existing array.
+  if (!existingWishList.productIds.includes(productData.node.productId)) {
+    updatedWishList.productIds.push(productData.node.productId);
+    updatedWishList.products.push(productData);
+  }
 
-	// Then push the new items to existing array.
-	if ( ! existingWishList.productIds.includes( productData.node.productId )  ) {
-		updatedWishList.productIds.push( productData.node.productId );
-		updatedWishList.products.push( productData );
-	}
-
-	// Update the localStorage with updated items.
-	addWishListToLocalStorage( updatedWishList );
-
-}
+  // Update the localStorage with updated items.
+  addWishListToLocalStorage(updatedWishList);
+};
 
 /**
  * Remove item from the list.
@@ -521,26 +518,34 @@ export const addToWishList = ( productData ) => {
  * @param getWishList
  * @param setWishList
  */
-export const removeProductFromWishList = ( productId, getWishList, setWishList ) => {
-	const existingWishlist = getWishListProducts();
-	let updatedWishList;
+export const removeProductFromWishList = (
+  productId,
+  getWishList,
+  setWishList
+) => {
+  const existingWishlist = getWishListProducts();
+  let updatedWishList;
 
-	if ( ! isEmpty( existingWishlist ) ) {
-		const updatedItems = {
-			productIds: remove( existingWishlist.productIds, ( id ) => { return productId !== id } ),
-			products: remove( existingWishlist.products, ( product ) => { return productId !== product.node.productId } )
-		}
+  if (!isEmpty(existingWishlist)) {
+    const updatedItems = {
+      productIds: remove(existingWishlist.productIds, (id) => {
+        return productId !== id;
+      }),
+      products: remove(existingWishlist.products, (product) => {
+        return productId !== product.node.productId;
+      }),
+    };
 
-		updatedWishList = addWishListToLocalStorage( updatedItems  );
+    updatedWishList = addWishListToLocalStorage(updatedItems);
 
-		if ( 0 === updatedItems.productIds.length ) {
-			setWishList(null);
-		} else {
-			getWishList();
-		}
+    if (0 === updatedItems.productIds.length) {
+      setWishList(null);
+    } else {
+      getWishList();
+    }
 
-		return updatedWishList;
-	}
+    return updatedWishList;
+  }
 };
 
 /**
@@ -549,8 +554,8 @@ export const removeProductFromWishList = ( productId, getWishList, setWishList )
  * @param wishList
  */
 export const addWishListToLocalStorage = (wishList) => {
-	return localStorage.setItem( 'woo_wishlist', JSON.stringify( wishList ) )
-}
+  return localStorage.setItem("woo_wishlist", JSON.stringify(wishList));
+};
 
 /**
  * Checks if the product with given id exists in the wishlist.
@@ -558,25 +563,25 @@ export const addWishListToLocalStorage = (wishList) => {
  * @param productId
  * @returns {boolean}
  */
-export const isProductInWishList = ( productId ) => {
-	if ( ! process.browser ) {
-		return null;
-	}
-	const existingWishList = JSON.parse( localStorage.getItem( 'woo_wishlist' ) );
+export const isProductInWishList = (productId) => {
+  if (!process.browser) {
+    return null;
+  }
+  const existingWishList = JSON.parse(localStorage.getItem("woo_wishlist"));
 
-	if ( ! isEmpty( existingWishList ) ) {
-		return existingWishList.productIds.includes( productId );
-	} else {
-		return false;
-	}
-}
+  if (!isEmpty(existingWishList)) {
+    return existingWishList.productIds.includes(productId);
+  } else {
+    return false;
+  }
+};
 
 export const getWishListProducts = () => {
-	if ( ! process.browser ) {
-		return null;
-	}
-	return JSON.parse( localStorage.getItem( 'woo_wishlist' ) );
-}
+  if (!process.browser) {
+    return null;
+  }
+  return JSON.parse(localStorage.getItem("woo_wishlist"));
+};
 
 /**
  * Sanitize markup or text when used inside dangerouslysetInnerHTML
@@ -586,5 +591,5 @@ export const getWishListProducts = () => {
  * @return {string} Sanitized string
  */
 export const sanitize = (content) => {
-	return process.browser ? DOMPurify.sanitize(content) : content
-}
+  return process.browser ? DOMPurify.sanitize(content) : content;
+};

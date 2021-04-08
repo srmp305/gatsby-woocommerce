@@ -6,11 +6,11 @@ import phone from '../../images/phoneicon.svg';
 import fb from '../../images/facebook.svg';
 import twitter from '../../images/twitter.svg';
 import insta from '../../images/instagram.svg';
-import InstaFeed from '../instafeed/instafeed';
+// import InstaFeed from '../instafeed/instafeed';
 
 import React from 'react';
 
-const Footer = ({ data }) => {
+export const FooterLayout = ({ data }) => {
   const {
     wp: {
       getFooter: { sidebarOne },
@@ -91,7 +91,7 @@ const Footer = ({ data }) => {
             <h2>{wpContactQuery.instagramTitleFooter}</h2>
 
             <div className="insta-post">
-              <InstaFeed />
+              {/* <InstaFeed /> */}
             </div>
           </div>
         </div>
@@ -104,4 +104,4 @@ const Footer = ({ data }) => {
  *  Exporting Just the footer as well without static query for storybook,
  *  as static query does not work in storybook
  */
-export { Footer };
+// export { FooterLayout };
