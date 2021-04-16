@@ -9,7 +9,7 @@ const WishList = () => {
 
 
 	const [ wishList, setWishList ] = useState( getWishListProducts() );
-
+// debugger
 	return (
 		<Layout>
 			<div className="container my-5">

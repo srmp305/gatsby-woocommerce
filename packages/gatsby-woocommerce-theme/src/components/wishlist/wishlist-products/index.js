@@ -4,6 +4,7 @@ import GET_PRODUCTS from "../../../queries/get-products";
 import {
   addWishListToLocalStorage,
   getWishListProducts,
+  GetWishListIds,
 } from "../../../utils/functions";
 import { isEmpty } from "lodash";
 import WishlistProduct from "../wishlist-product";
@@ -13,71 +14,56 @@ const WishlistProducts = ({ setWishList }) => {
    * We get the product data from localStorage first and set it to the 'products' initial value
    * so that it can be used even when offline.
    */
-  const wishListProducts = getWishListProducts();
-  const [products, setProducts] = useState(wishListProducts.products);
-  const productIds = !isEmpty(wishListProducts)
-    ? wishListProducts.productIds
-    : [];
+  const [productIds, setProductIds] = useState([]);
+  const [products, setProducts] = useState([]);
 
   // Get Cart Data.
   const [getWishList, { loading }] = useLazyQuery(GET_PRODUCTS, {
     variables: {
-      include: productIds,
+      include: productIds.length ? productIds : [12575],
     },
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       // If the request is sucessfull updated products with fresh data
       if (!isEmpty(data.products.edges)) {
         setProducts(data.products.edges);
-
-        // Update the localStorage with fresh data( this is will ensure data is not stale ).
-        addWishListToLocalStorage({
-          productIds: productIds,
-          products: data.products.edges,
-        });
+        console.log("data", data.products.edges);
       }
     },
-    onError: () => {
+    onError: (e) => {
       const prod = getWishListProducts();
       setProducts(prod);
+      console.log("error", e);
     },
   });
 
-  const result = fetch(
-    "https://admin.sergiosmarketplace.com/wp-json/wc/v3/wishlist/16386B/get_products", {
-      method: 'get',
-    }
-  )
-    .then((res) => console.log(res.json()))
-    .catch((err) => err);
-
+  useEffect(() => {
+    GetWishListIds().then((ids) => {
+      console.log(ids);
+      setProductIds(ids);
+    });
+  }, []);
   /* eslint-disable */
   useEffect(() => {
-    getWishList(result);
-  }, []);
+    getWishList();
+  }, [productIds]);
 
-  if (undefined === products.length) {
+  if (!products.length && loading) {
     return null;
   }
-
   return (
     <div className="container my-5">
       <div className="container">
         <div className="product-container row">
-          {!loading &&
-            !isEmpty(products) &&
-            products.length &&
-            products.map((product) => {
-              return (
-                <WishlistProduct
-                  key={product.node.id}
-                  product={product.node}
-                  getWishList={getWishList}
-                  setWishList={setWishList}
-                />
-              );
-            })}
-          {loading && <div style={{ height: "630px" }}>Loading...</div>}
+          {!loading ? (
+            <WishlistProduct
+              product={products}
+              getWishList={getWishList}
+              setWishList={setWishList}
+            />
+          ) : (
+            <div style={{ height: "630px" }}>Loading...</div>
+          )}
         </div>
       </div>
     </div>

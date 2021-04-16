@@ -63,10 +63,12 @@ const AddToWishList = ({ product }) => {
     addToWishList(productData);
     setInWishList(true);
   };
+
   const getData = (id) => {
     WooCommerceWishlist.get(`wishlist/get_by_user/${id}`)
       .then((res) => {
         const key = res.data[0].share_key;
+        localStorage.setItem('shareKey', key)
         postdata(key);
       })
       .catch((err) => err);
