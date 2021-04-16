@@ -590,7 +590,6 @@ export const removeProductFromWishList = (
 };
 
 export const removeWishListProduct = (productId) => {
-  // debugger
   WooCommerceWishlist.get(`wishlist/remove_product/${productId}`)
     .then((data) => {
       console.log(data)
@@ -640,11 +639,9 @@ export const GetWishListIds = async () => {
     return null;
   }
   const k = localStorage.getItem('shareKey')
-  console.log(k);
   const arr = []
   const arr1 = []
-  // const ak = async(shareKey) => {
-  const a = await WooCommerceWishlist.get(`wishlist/${k}/get_products`)
+  const getProducts = await WooCommerceWishlist.get(`wishlist/${k}/get_products`)
     .then((res) => {
       // debugger
       res.data.forEach((d) => {
@@ -653,18 +650,12 @@ export const GetWishListIds = async () => {
       })
       console.log(arr)
       localStorage.setItem('arr', JSON.stringify(arr1))
-      // debugger
-      // return arr
 
     }).then(() => arr)
     .catch((err) => { console.log(err) });
-  console.log(a)
-  // debugger
-  // return 
-  // }
-  // const a = await ak(k)
-  // debugger
-  return a
+  console.log(getProducts)
+  
+  return getProducts
 }
 
 /**
