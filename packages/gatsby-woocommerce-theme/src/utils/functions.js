@@ -403,6 +403,7 @@ export const isUserLoggedIn = () => {
 
 export const logOut = () => {
   localStorage.removeItem("auth");
+  localStorage.removeItem("shareKey")
 };
 
 const WooCommerceWishlist = new WooCommerceRestApi({
@@ -590,6 +591,7 @@ export const removeProductFromWishList = (
 };
 
 export const removeWishListProduct = (productId) => {
+  // debugger
   WooCommerceWishlist.get(`wishlist/remove_product/${productId}`)
     .then((data) => {
       console.log(data)
@@ -635,13 +637,16 @@ export const getWishListProducts = () => {
   return JSON.parse(localStorage.getItem("woo_wishlist"));
 };
 export const GetWishListIds = async () => {
+  // debugger
   if (!process.browser) {
     return null;
   }
   const k = localStorage.getItem('shareKey')
+  console.log(k);
   const arr = []
   const arr1 = []
-  const getProducts = await WooCommerceWishlist.get(`wishlist/${k}/get_products`)
+  // const ak = async(shareKey) => {
+  const a = await WooCommerceWishlist.get(`wishlist/${k}/get_products`)
     .then((res) => {
       // debugger
       res.data.forEach((d) => {
@@ -650,12 +655,18 @@ export const GetWishListIds = async () => {
       })
       console.log(arr)
       localStorage.setItem('arr', JSON.stringify(arr1))
+      // debugger
+      // return arr
 
     }).then(() => arr)
     .catch((err) => { console.log(err) });
-  console.log(getProducts)
-  
-  return getProducts
+  console.log(a)
+  // debugger
+  // return 
+  // }
+  // const a = await ak(k)
+  // debugger
+  return a
 }
 
 /**

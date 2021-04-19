@@ -28,6 +28,9 @@ const AddToWishList = ({ product }) => {
   }
 
   const handleAddToWishList = () => {
+    if (localStorage.getItem("auth") === null) {
+      window.location.href = window.location.href.replace("shop", "my-account");
+    }
     const productData = {
       node: {
         id: product.id,
@@ -68,7 +71,7 @@ const AddToWishList = ({ product }) => {
     WooCommerceWishlist.get(`wishlist/get_by_user/${id}`)
       .then((res) => {
         const key = res.data[0].share_key;
-        localStorage.setItem('shareKey', key)
+        localStorage.setItem("shareKey", key);
         postdata(key);
       })
       .catch((err) => err);
