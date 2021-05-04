@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 import { isEmpty, remove } from "lodash";
 import DOMPurify from "dompurify";
+import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 
 export const normalizePath = (path) => {
   const pathStr = path.split("/");
@@ -285,15 +286,15 @@ export const getFormattedCart = (data) => {
     // Ensure we can add products without images to the cart
     !isEmpty(givenProduct?.node?.image)
       ? (product.image = {
-          sourceUrl: givenProduct?.node?.image.sourceUrl,
-          srcSet: givenProduct?.node?.image.srcSet,
-          title: givenProduct?.node?.image.title,
-        })
+        sourceUrl: givenProduct?.node?.image.sourceUrl,
+        srcSet: givenProduct?.node?.image.srcSet,
+        title: givenProduct?.node?.image.title,
+      })
       : (product.image = {
-          sourceUrl: "https://via.placeholder.com/434",
-          srcSet: "https://via.placeholder.com/434",
-          title: givenProduct?.node?.name,
-        });
+        sourceUrl: "https://via.placeholder.com/434",
+        srcSet: "https://via.placeholder.com/434",
+        title: givenProduct?.node?.name,
+      });
 
     totalProductsCount += givenProducts[i].quantity;
 
@@ -402,9 +403,48 @@ export const isUserLoggedIn = () => {
 
 export const logOut = () => {
   localStorage.removeItem("auth");
+  localStorage.removeItem("shareKey")
 };
 
+const WooCommerceWishlist = new WooCommerceRestApi({
+  url: "https://admin.sergiosmarketplace.com/",
+  consumerKey: "ck_1ffa458f741c39832479533965140e3f53ab9da9",
+  consumerSecret: "cs_bf0f9d779e2744e45b94aaab00f47d9e7d035960",
+  wpAPI: true,
+  version: "wc/v3",
+  queryStringAuth: true,
+});
 export const setAuth = (authData) => {
+  fetch("https://admin.sergiosmarketplace.com/wp-json/get/allcustomer/id")
+    .then((res) => {
+      res.json().then(async (data) => {
+        const authLogin = JSON.parse(localStorage.getItem("auth"));
+        const { email } = authLogin.user;
+        if (email) {
+          const dataUser = data.filter((d) => d.email === email);
+          // console.log(dataUser[0].databaseId);
+          getData(dataUser[0].databaseId);
+          // return 123;
+        }
+        // console.log(authLogin.user.email);
+      });
+      // console.log(userId);
+    })
+    .catch((err) => { }/* console.log(err) */);
+  const getData = (id) => {
+    WooCommerceWishlist.get(`wishlist/get_by_user/${id}`)
+      .then((res) => {
+        const key = res.data[0].share_key;
+        // console.log(key);
+        localStorage.setItem('shareKey', key)
+        // postdata(key);
+        // ak(key)
+        // console.log(a)
+        // debugger
+        // return a
+      })
+      .catch((err) => err);
+  };
   localStorage.setItem("auth", JSON.stringify(authData));
 };
 
@@ -487,6 +527,7 @@ export const addToWishList = (productData) => {
 
   // Set it in localStorage and return.
   if (isEmpty(existingWishList)) {
+    // debugger
     updatedWishList = addWishListToLocalStorage({
       productIds: [productData.node.productId],
       products: [productData],
@@ -508,6 +549,7 @@ export const addToWishList = (productData) => {
   }
 
   // Update the localStorage with updated items.
+  // debugger
   addWishListToLocalStorage(updatedWishList);
 };
 
@@ -535,7 +577,7 @@ export const removeProductFromWishList = (
         return productId !== product.node.productId;
       }),
     };
-
+    // debugger
     updatedWishList = addWishListToLocalStorage(updatedItems);
 
     if (0 === updatedItems.productIds.length) {
@@ -548,12 +590,24 @@ export const removeProductFromWishList = (
   }
 };
 
+export const removeWishListProduct = (productId) => {
+  // debugger
+  WooCommerceWishlist.get(`wishlist/remove_product/${productId}`)
+    .then((data) => {
+      console.log(data)
+      window.location.reload()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+};
 /**
  * Add wishlist products to localStorage.
  *
  * @param wishList
  */
 export const addWishListToLocalStorage = (wishList) => {
+  // debugger
   return localStorage.setItem("woo_wishlist", JSON.stringify(wishList));
 };
 
@@ -582,6 +636,38 @@ export const getWishListProducts = () => {
   }
   return JSON.parse(localStorage.getItem("woo_wishlist"));
 };
+export const GetWishListIds = async () => {
+  // debugger
+  if (!process.browser) {
+    return null;
+  }
+  const k = localStorage.getItem('shareKey')
+  console.log(k);
+  const arr = []
+  const arr1 = []
+  // const ak = async(shareKey) => {
+  const a = await WooCommerceWishlist.get(`wishlist/${k}/get_products`)
+    .then((res) => {
+      // debugger
+      res.data.forEach((d) => {
+        arr.push(d.product_id)
+        arr1.push({ productId: d.product_id, itemId: d.item_id })
+      })
+      console.log(arr)
+      localStorage.setItem('arr', JSON.stringify(arr1))
+      // debugger
+      // return arr
+
+    }).then(() => arr)
+    .catch((err) => { console.log(err) });
+  console.log(a)
+  // debugger
+  // return 
+  // }
+  // const a = await ak(k)
+  // debugger
+  return a
+}
 
 /**
  * Sanitize markup or text when used inside dangerouslysetInnerHTML

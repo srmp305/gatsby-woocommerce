@@ -13,29 +13,29 @@ import Link from 'gatsby-link';
  * @return {jsx}
  */
 const WishListIcon = () => {
-	const [wishlistCount, setWishListCount] = useState( null );
+	// const [wishlistCount, setWishListCount] = useState( null );
 
-	useEffect( () => {
-		const existingWishList = JSON.parse( localStorage.getItem( 'woo_wishlist' ) );
+	// useEffect( () => {
+	// 	const existingWishList = JSON.parse( localStorage.getItem( 'woo_wishlist' ) );
 
-		if ( !isEmpty( existingWishList ) ) {
-			setWishListCount( existingWishList.productIds.length );
-		}
-	}, [wishlistCount] );
+	// 	if ( !isEmpty( existingWishList ) ) {
+	// 		setWishListCount( existingWishList.productIds.length );
+	// 	}
+	// }, [wishlistCount] );
 
 	return (
 		<Link to="/wishlist" className="wishlist-menu">
-			{ !wishlistCount ?
-				<HeartIcon/>
+			<HeartIcon/>
+			{/* { !wishlistCount ?
 				:
 				(
 					<>
-						<HeartBlackIcon/>
+						<HeartBlackIcon/> */}
 						{/* TODO to be handled later to use React Context API, to store these information globally*/}
 						{/*<span className="wishlist-count">{ wishlistCount }</span>*/}
-					</>
+					{/* </>
 				)
-			}
+			} */}
 		</Link>
 	);
 }

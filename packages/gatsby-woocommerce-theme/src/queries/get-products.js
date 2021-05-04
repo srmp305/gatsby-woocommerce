@@ -6,7 +6,7 @@ const GET_PRODUCTS = gql`
 	    edges {
 	      node {
 	        id
-	        productId
+			databaseId
 	        type
 	        link
 	        image {
