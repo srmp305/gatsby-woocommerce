@@ -90,12 +90,12 @@ module.exports = ({
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     `gatsby-plugin-offline`,
-    {
-      resolve: `gatsby-source-instagram-all`,
-      options: {
-        // access_token:
-        //   "IGQVJVVjFlMWQ3SHBoWVdUd2ZAPYTlBc3B4ZAGt4U2xPd0JGUU1LdHVXTEwtMm5vMVJTLUI5VkQyLVROV0VGYWp0ZATlmUEtZAcHQtY1lRd3VoVFVTLTFsc1p3aG0xSERRQ1RBSVdiUFI4RGgxbWd4dFhWYgZDZD",
-      },
-    },
+    // {
+    //   resolve: `gatsby-source-instagram-all`,
+    //   options: {
+    //     access_token:
+    //       "IGQVJVVjFlMWQ3SHBoWVdUd2ZAPYTlBc3B4ZAGt4U2xPd0JGUU1LdHVXTEwtMm5vMVJTLUI5VkQyLVROV0VGYWp0ZATlmUEtZAcHQtY1lRd3VoVFVTLTFsc1p3aG0xSERRQ1RBSVdiUFI4RGgxbWd4dFhWYgZDZD",
+    //   },
+    // },
   ],
 });
