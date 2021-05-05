@@ -67,14 +67,14 @@ module.exports = ({
         },
       },
     },
-    {
-      resolve: "gatsby-plugin-robots-txt",
-      options: {
-        host: gatsbySiteUrl,
-        sitemap: `${gatsbySiteUrl}/sitemap.xml`,
-        policy: [{ userAgent: "*", allow: ["/"] }],
-      },
-    },
+    // {
+    //   resolve: "gatsby-plugin-robots-txt",
+    //   options: {
+    //     host: gatsbySiteUrl,
+    //     sitemap: `${gatsbySiteUrl}/sitemap.xml`,
+    //     policy: [{ userAgent: "*", allow: ["/"] }],
+    //   },
+    // },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
