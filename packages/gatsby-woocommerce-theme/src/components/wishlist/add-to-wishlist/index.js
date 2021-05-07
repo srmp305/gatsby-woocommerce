@@ -37,9 +37,9 @@ const AddToWishList = ({ product }) => {
         externalUrl: !isEmpty(product.externalUrl) ? product.externalUrl : "",
         productId: product.productId,
         image: {
-          id: !isEmpty(product.image.id) ? product.image.id : "",
-          altText: !isEmpty(product.image.altText) ? product.image.altText : "",
-          sourceUrl: !isEmpty(product.image.sourceUrl)
+          id: !isEmpty(product.image) ? product.image.id : "",
+          altText: !isEmpty(product.image) ? product.image.altText : "",
+          sourceUrl: !isEmpty(product.image)
             ? product.image.sourceUrl
             : "",
         },
