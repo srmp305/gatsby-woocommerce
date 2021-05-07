@@ -1,5 +1,8 @@
 @import "../../../sass/essentials";
 
+.notification {
+	box-shadow:none !important;
+}
 .product-container > div {
 	position: relative;
 	.wishlist-container {
