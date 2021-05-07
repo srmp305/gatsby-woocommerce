@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { NotificationManager } from 'react-notifications';
 import { isEmpty } from "lodash";
 import { addToWishList, isProductInWishList } from "../../../utils/functions";
 import Link from "gatsby-link";
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import "./style.scss";
+import 'react-notifications/lib/notifications.css';
 
 export const WooCommerceWishlist = new WooCommerceRestApi({
   url: "https://admin.sergiosmarketplace.com/",
@@ -15,8 +17,14 @@ export const WooCommerceWishlist = new WooCommerceRestApi({
 });
 
 const AddToWishList = ({ product }) => {
+
   const [isInWishList, setInWishList] = useState(false);
 
+  const createNotification = () => {
+    return () => {
+      NotificationManager.success('Success message', 'Title here');
+    };
+  }
   /* eslint-disable */
   useEffect(() => {
     const isItemInWishList = isProductInWishList(product.productId);
@@ -29,8 +37,12 @@ const AddToWishList = ({ product }) => {
 
   const handleAddToWishList = () => {
     if (localStorage.getItem("auth") === null) {
-      window.location.href = window.location.href.replace("shop", "my-account");
+      if (window.location.href.includes("shop"))
+        window.location.href = window.location.href.replace("shop", "my-account")
+      else if (window.location.href.substr(window.location.href.length - 1) == "/")
+        window.location.href += "my-account"
     }
+
     const productData = {
       node: {
         id: product.id,
@@ -83,7 +95,10 @@ const AddToWishList = ({ product }) => {
       variation_id: 0,
       meta: ["test"],
     })
-      .then((res) => res.data)
+      .then((res) => {
+        createNotification()
+        res.data
+      })
       .catch((err) => err);
   };
 
