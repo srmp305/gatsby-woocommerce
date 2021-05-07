@@ -10,7 +10,7 @@ import AddToWishList from "../wishlist/add-to-wishlist";
 const productImagePlaceholder = "https://via.placeholder.com/434";
 
 const Product = (props) => {
-  const { product } = props;
+  const { product } = props
 
   const hasImagesSizes =
     !isEmpty(product.image) && !isEmpty(product.image.mediaDetails.sizes);

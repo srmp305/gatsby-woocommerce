@@ -1,10 +1,14 @@
 import React from "react";
+import {  NotificationContainer } from 'react-notifications';
+
 import { isEmpty } from "lodash";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "./style.scss";
 import { sanitize } from "../../utils/functions";
 import Aside from "../aside";
 import ListAllProducts from "../../templates/list-products";
+import 'react-notifications/lib/notifications.css';
+
 const Page = (props) => {
   const { data } = props;
   const hasImagesSizes =
@@ -29,7 +33,10 @@ const Page = (props) => {
           <div className="row">
             <main className="page-content col-md-9">
               {data.uri === "/shop/" ? (
+                <>
                 <ListAllProducts />
+                <NotificationContainer/>
+                </>
               ) : (
                 <>
                   {!isEmpty(data.featuredImage) ? (
