@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NotificationManager } from 'react-notifications';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { isEmpty } from "lodash";
 import { addToWishList, isProductInWishList } from "../../../utils/functions";
 import Link from "gatsby-link";
@@ -21,10 +21,8 @@ const AddToWishList = ({ product }) => {
   const [isInWishList, setInWishList] = useState(false);
 
   const createNotification = () => {
-    return () => {
-      NotificationManager.success('Success message', 'Title here');
-    };
-  }
+    NotificationManager.success('Product added to wishlist', 'Success')
+  };
   /* eslint-disable */
   useEffect(() => {
     const isItemInWishList = isProductInWishList(product.productId);
@@ -124,6 +122,7 @@ const AddToWishList = ({ product }) => {
           </button>
         </Link>
       )}
+      <NotificationContainer />
     </div>
   );
 };

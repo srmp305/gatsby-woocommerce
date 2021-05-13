@@ -1,6 +1,4 @@
 import React from "react";
-import {  NotificationContainer } from 'react-notifications';
-
 import { isEmpty } from "lodash";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "./style.scss";
@@ -8,8 +6,20 @@ import { sanitize } from "../../utils/functions";
 import Aside from "../aside";
 import ListAllProducts from "../../templates/list-products";
 import 'react-notifications/lib/notifications.css';
+import { graphql, useStaticQuery } from "gatsby";
 
 const Page = (props) => {
+  const categories = useStaticQuery(graphql`
+	query{
+		allWpProductCategory {
+			nodes {
+			  id
+			  name
+			  uri
+			}
+		  }
+		}
+	  `)
   const { data } = props;
   const hasImagesSizes =
     null !== data.featuredImage &&
@@ -33,10 +43,7 @@ const Page = (props) => {
           <div className="row">
             <main className="page-content col-md-9">
               {data.uri === "/shop/" ? (
-                <>
                 <ListAllProducts />
-                <NotificationContainer/>
-                </>
               ) : (
                 <>
                   {!isEmpty(data.featuredImage) ? (
@@ -65,7 +72,7 @@ const Page = (props) => {
                 </>
               )}
             </main>
-            <Aside categories={data.categoriesData} />
+            <Aside categories={categories.allWpProductCategory.nodes} />
           </div>
         </div>
       ) : (

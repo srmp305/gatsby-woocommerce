@@ -20,6 +20,7 @@ module.exports = ({
     //     includeInDevelopment: false,
     //   },
     // },
+    `gatsby-plugin-material-ui`,
     `gatsby-plugin-react-helmet`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
