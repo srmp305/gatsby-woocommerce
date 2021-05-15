@@ -56,16 +56,20 @@ const WishlistProduct = (props) => {
 						<div className="card-body text-center">
 							<h3 className="card-header">{p.node.name ? p.node.name : ""}</h3>
 							<h6 className="card-subtitle">{p.node.price}</h6>
+							<div className="wish-buttons">
 							{'EXTERNAL' !== p.node.type ? <AddToCartButton product={p.node} /> : (
-								<div className="mb-5">
-									<a href={p.node.externalUrl} target="_blank" rel="noreferrer nofollow">
-										<button className="btn btn-outline-dark">Buy Now</button>
-									</a>
-								</div>
+								
+								<a href={p.node.externalUrl} target="_blank" rel="noreferrer nofollow">
+									<button className="btn btn-outline-dark">Buy Now</button>
+								</a>
+								
+								
 							)}
-							<div className="mb-2" style={{ marginTop: '-10px' }}>
-								<button onClick={()=>{handleRemoveFromWishList(p.node.databaseId)} }className="btn btn-outline-dark">Remove from wishlist</button>
-							</div>
+						
+
+						<button onClick={()=>{handleRemoveFromWishList(p.node.databaseId)} }className="btn btn-outline-dark">Remove from wishlist</button>
+						</div>
+						
 						</div>
 					</div>
 				) : null
