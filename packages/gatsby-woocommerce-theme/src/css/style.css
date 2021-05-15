@@ -3530,3 +3530,28 @@ body {
     color: #4BB543;
     margin-bottom: 10px;
 }
+
+.feature-box div {
+    width: 100px;
+    margin: 0px auto;
+}
+
+.wish-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wish-buttons p {
+    margin: 0;
+    display: none;
+}
+
+.wish-buttons div {
+    margin: 0px 2px;
+}
+
+.wish-buttons .btn {
+    margin: 0px 2px;
+    min-width: 150px;
+}
